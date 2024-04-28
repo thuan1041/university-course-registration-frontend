@@ -1,0 +1,112 @@
+[
+    {
+      "key": "1",
+      "stt": "1",
+      "maHpCu": "HP001",
+      "maHpMoi": "HP101",
+      "tenMonHoc": "Toán cao cấp",
+      "soTinChi": 3,
+      "batBuoc": true,
+      "hpTruocTienQuyet": "",
+      "hocPhanTuongDuong": ""
+    },
+    {
+      "key": "2",
+      "stt": "2",
+      "maHpCu": "HP002",
+      "maHpMoi": "HP102",
+      "tenMonHoc": "Lập trình cơ sở dữ liệu",
+      "soTinChi": 4,
+      "batBuoc": false,
+      "hpTruocTienQuyet": "",
+      "hocPhanTuongDuong": "HP001"
+    },
+    {
+      "key": "3",
+      "stt": "3",
+      "maHpCu": "HP003",
+      "maHpMoi": "HP103",
+      "tenMonHoc": "Kỹ thuật lập trình",
+      "soTinChi": 3,
+      "batBuoc": true,
+      "hpTruocTienQuyet": "HP002",
+      "hocPhanTuongDuong": ""
+    },
+    {
+      "key": "4",
+      "stt": "4",
+      "maHpCu": "HP004",
+      "maHpMoi": "HP104",
+      "tenMonHoc": "Cấu trúc dữ liệu và giải thuật",
+      "soTinChi": 4,
+      "batBuoc": false,
+      "hpTruocTienQuyet": "",
+      "hocPhanTuongDuong": ""
+    },
+    {
+      "key": "5",
+      "stt": "5",
+      "maHpCu": "HP005",
+      "maHpMoi": "HP105",
+      "tenMonHoc": "Lập trình hướng đối tượng",
+      "soTinChi": 3,
+      "batBuoc": true,
+      "hpTruocTienQuyet": "",
+      "hocPhanTuongDuong": ""
+    },
+    {
+      "key": "6",
+      "stt": "6",
+      "maHpCu": "HP006",
+      "maHpMoi": "HP106",
+      "tenMonHoc": "Mạng máy tính",
+      "soTinChi": 4,
+      "batBuoc": true,
+      "hpTruocTienQuyet": "HP005",
+      "hocPhanTuongDuong": ""
+    },
+    {
+      "key": "7",
+      "stt": "7",
+      "maHpCu": "HP007",
+      "maHpMoi": "HP107",
+      "tenMonHoc": "Hệ điều hành",
+      "soTinChi": 3,
+      "batBuoc": false,
+      "hpTruocTienQuyet": "",
+      "hocPhanTuongDuong": "HP005"
+    },
+    {
+      "key": "8",
+      "stt": "8",
+      "maHpCu": "HP008",
+      "maHpMoi": "HP108",
+      "tenMonHoc": "An toàn và bảo mật thông tin",
+      "soTinChi": 3,
+      "batBuoc": true,
+      "hpTruocTienQuyet": "",
+      "hocPhanTuongDuong": ""
+    },
+    {
+      "key": "9",
+      "stt": "9",
+      "maHpCu": "HP009",
+      "maHpMoi": "HP109",
+      "tenMonHoc": "Quản lý dự án phần mềm",
+      "soTinChi": 3,
+      "batBuoc": false,
+      "hpTruocTienQuyet": "",
+      "hocPhanTuongDuong": ""
+    },
+    {
+      "key": "10",
+      "stt": "10",
+      "maHpCu": "HP010",
+      "maHpMoi": "HP110",
+      "tenMonHoc": "Đồ án tốt nghiệp",
+      "soTinChi": 6,
+      "batBuoc": true,
+      "hpTruocTienQuyet": "HP008, HP009",
+      "hocPhanTuongDuong": ""
+    }
+  ]
