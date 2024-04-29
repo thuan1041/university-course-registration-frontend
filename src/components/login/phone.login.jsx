@@ -26,9 +26,9 @@ const LoginPhone = () => {
             if (response.errCode === 0) {
                 console.log("Login response", response);
                 toast.success("Login successful!");
-                // dispatch(loginStart(response.data))
-                // dispatch (loginSuccess(response.data))
-                navigate(`/home`)
+                setTimeout(()=>{
+                    navigate(`/home`)
+                },[1000])
             } else {
                 setLoading(false);
                 toast.error("Login failed. Please check your credentials.");

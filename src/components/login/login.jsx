@@ -22,8 +22,6 @@ const items = [
 
 
 const Login = () => {
-
-
     return (
         <Tabs
             defaultActiveKey="1"
