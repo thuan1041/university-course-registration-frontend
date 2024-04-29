@@ -17,6 +17,7 @@ const Courses = ({ allCoursesData, onCourseRowClick }) => {
     setSelectedCourse(record);
     // setIsModalVisible(true);
     onCourseRowClick(record); // Gọi hàm callback để truyền thông tin khóa học được chọn
+    console.log(JSON.stringify(record));
   };
 
   const handleCloseModal = () => {
@@ -43,13 +44,14 @@ const Courses = ({ allCoursesData, onCourseRowClick }) => {
         title: 'STT',
         render: (text, record, index) => index + 1,
       },
+      // {
+      //   title: 'Mã HP cũ',
+      //   dataIndex: 'maHpCu',
+      // },
       {
-        title: 'Mã HP cũ',
-        dataIndex: 'maHpCu',
-      },
-      {
-        title: 'Mã học phần mới',
-        dataIndex: 'maHpMoi',
+        title: 'Mã học phần',
+        dataIndex: '_id',
+        render: (_id)=> `HP${_id.slice(-8)}`
       },
       {
         title: 'Tên môn học',
@@ -72,12 +74,21 @@ const Courses = ({ allCoursesData, onCourseRowClick }) => {
       },
       {
         title: 'HP trước tiên quyết',
-        dataIndex: 'hpTruocTienQuyet',
+        dataIndex: 'prerequisiteCourse',
+        render: (prerequisites) => {
+            if (prerequisites && prerequisites.length > 0) {
+                const prereqString = prerequisites.join(', '); // Chuyển mảng thành chuỗi
+                const last8Chars = prereqString.slice(-8); // Lấy 8 ký tự cuối
+                return `HP${last8Chars}`; // Ghép chuỗi "HP" với 8 ký tự cuối
+            } else {
+                return ''; // Nếu không có mã học phần tiên quyết, trả về chuỗi rỗng
+            }
+        }
       },
-      {
-        title: 'Học phần tương đương',
-        dataIndex: 'hocPhanTuongDuong',
-      },
+      // {
+      //   title: 'Học phần tương đương',
+      //   dataIndex: 'hocPhanTuongDuong',
+      // },
   ];
 
   return (
@@ -89,6 +100,7 @@ const Courses = ({ allCoursesData, onCourseRowClick }) => {
           onClick: () => handleRowClick(record),
         })}
         rowKey={(record) => record.key}
+        pagination={false}
       />
 
       {/* <Modal

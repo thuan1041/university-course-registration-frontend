@@ -11,7 +11,8 @@ import { Form, Select, Button } from 'antd';
 const { Option } = Select;
 
 
-const ClassDetails = () => {
+const ClassDetails = (selectedClass) => {
+  console.log(selectedClass);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedRowKey, setSelectedRowKey] = useState(null);
@@ -81,22 +82,20 @@ const ClassDetails = () => {
     
     return (
       <div>
-        <Form onFinish={onFinish} layout="inline" style={{marginLeft:26, marginBottom:10, marginTop:10, flexDirection:'row', justifyContent:'center'}}>
-        <div className="practice-group-label">Nhóm thực hành</div>
-        <Form.Item name="example" style={{ marginRight: 20 }}>
-            <Select defaultValue="1" style={{ width: 120 }}>
-            <Select.Option value="1">1</Select.Option>
-            <Select.Option value="2">2</Select.Option>
-            <Select.Option value="3">3</Select.Option>
-            <Select.Option value="4">4</Select.Option>
-            {/* Thêm các option khác nếu cần */}
-            </Select>
-        </Form.Item>
-        <Form.Item>
-            <Button type="primary" style={{ backgroundColor: 'orange', border: 'none' }}>Xem lịch trùng</Button>
-        </Form.Item>
+        <Form onFinish={onFinish} layout="inline" style={{ marginLeft: 26, marginBottom: 10, marginTop: 10, flexDirection: 'row', justifyContent: 'center' }} initialValues={{ example: "1" }}>
+            <div className="practice-group-label">Nhóm thực hành</div>
+            <Form.Item name="example" style={{ marginRight: 20 }}>
+                <Select style={{ width: 120 }}>
+                    <Select.Option value="1">1</Select.Option>
+                    <Select.Option value="2">2</Select.Option>
+                    <Select.Option value="3">3</Select.Option>
+                    <Select.Option value="4">4</Select.Option>
+                </Select>
+            </Form.Item>
+            <Form.Item>
+                <Button type="primary" style={{ backgroundColor: 'orange', border: 'none' }}>Xem lịch trùng</Button>
+            </Form.Item>
         </Form>
-
         <Table
           columns={columns}
           dataSource={dataClassDetails}
