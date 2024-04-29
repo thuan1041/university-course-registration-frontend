@@ -1,0 +1,53 @@
+[
+    {
+      "key": "1",
+      "stt": "1",
+      "maHp": "HP001",
+      "tenLopHocPhan": "Toán cao cấp",
+      "lopDuKien": "A1",
+      "siSoToiDa": 50,
+      "soLuongDaDangKy": 30,
+      "trangThai": 1
+    },
+    {
+      "key": "2",
+      "stt": "2",
+      "maHp": "HP002",
+      "tenLopHocPhan": "Lập trình cơ sở dữ liệu",
+      "lopDuKien": "A2",
+      "siSoToiDa": 40,
+      "soLuongDaDangKy": 25,
+      "trangThai": 1
+    },
+    {
+      "key": "3",
+      "stt": "3",
+      "maHp": "HP003",
+      "tenLopHocPhan": "Kỹ thuật lập trình",
+      "lopDuKien": "B1",
+      "siSoToiDa": 45,
+      "soLuongDaDangKy": 35,
+      "trangThai": 0
+    },
+    {
+      "key": "4",
+      "stt": "4",
+      "maHp": "HP004",
+      "tenLopHocPhan": "Cấu trúc dữ liệu và giải thuật",
+      "lopDuKien": "C1",
+      "siSoToiDa": 60,
+      "soLuongDaDangKy": 40,
+      "trangThai": 1
+    },
+    {
+      "key": "5",
+      "stt": "5",
+      "maHp": "HP005",
+      "tenLopHocPhan": "Lập trình hướng đối tượng",
+      "lopDuKien": "A1",
+      "siSoToiDa": 55,
+      "soLuongDaDangKy": 30,
+      "trangThai": 1
+    }
+  ]
+  

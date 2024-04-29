@@ -8,6 +8,8 @@ import logo from '../../public/images/dai-hoc-cong-nghiep-bacground.png'
 import Courses from "../components/courses/Courses";
 import RegistrationControl from "../components/registrationControl/RegistrationControl";
 import StudentInfo from "../components/studentInfo/StudentInfo";
+import CoursePendingRegistered from "../components/courses/CoursePendingRegistered";
+import ClassDetails from "../components/courses/ClassDetails";
 
 const { Option } = Select;
 
@@ -27,6 +29,10 @@ const homeSublayout = () => {
                     <Content>
                         <h3 className="title2" style={{textAlign:'center', paddingTop:30, marginBottom:20}}>MÔN HỌC PHẦN ĐANG CHỜ ĐƯỢC ĐĂNG KÝ</h3>
                         <Courses/>
+                        <h3 className="title2" style={{textAlign:'center', paddingTop:30, marginBottom:20}}>LỚP HỌC PHẦN ĐANG CHỜ ĐƯỢC ĐĂNG KÝ</h3>
+                        <CoursePendingRegistered/>
+                        <h3 className="title2" style={{textAlign:'center', paddingTop:30, marginBottom:20}}>CHI TIẾT LỚP HỌC PHẦN</h3>
+                        <ClassDetails/>
                     </Content>
                 </Content>
             </Content>

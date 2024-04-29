@@ -1,3 +1,13 @@
 .selected-row {
     background-color: #e6f7ff;
 }
+.fixed-height-row {
+    height: 40px; /* Đặt chiều cao cố định cho mỗi dòng */
+}
+.practice-group-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    border-radius: 4px;
+    margin-right: 10px;
+}  

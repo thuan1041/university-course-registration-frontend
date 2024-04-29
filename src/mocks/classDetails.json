@@ -1,0 +1,68 @@
+[
+{
+    "key": "1",
+    "stt": "1",
+    "lichHoc": "Thứ 2, Thứ 4",
+    "tenLopHocPhan": "NHÓM TH01",
+    "lopDuKien": "101",
+    "dayNha": "A",
+    "coSo": "CS1",
+    "giangVien": "Nguyễn Văn A",
+    "thoiGianHoc": "7:30 - 9:30"
+},
+{
+    "key": "2",
+    "stt": "2",
+    "lichHoc": "Thứ 3, Thứ 5",
+    "tenLopHocPhan": "NHÓM TH02",
+    "lopDuKien": "102",
+    "dayNha": "B",
+    "coSo": "CS1",
+    "giangVien": "Trần Thị B",
+    "thoiGianHoc": "9:00 - 11:00"
+},
+{
+    "key": "3",
+    "stt": "3",
+    "lichHoc": "Thứ 2, Thứ 4",
+    "tenLopHocPhan": "NHÓM TH03",
+    "lopDuKien": "103",
+    "dayNha": "C",
+    "coSo": "CS2",
+    "giangVien": "Lê Văn C",
+    "thoiGianHoc": "13:30 - 15:30"
+},
+{
+    "key": "4",
+    "stt": "4",
+    "lichHoc": "Thứ 3, Thứ 5",
+    "tenLopHocPhan": "NHÓM TH04",
+    "lopDuKien": "104",
+    "dayNha": "D",
+    "coSo": "CS2",
+    "giangVien": "Phạm Thị D",
+    "thoiGianHoc": "14:00 - 16:00"
+},
+{
+    "key": "5",
+    "stt": "5",
+    "lichHoc": "Thứ 4, Thứ 6",
+    "tenLopHocPhan": "NHÓM TH05",
+    "lopDuKien": "105",
+    "dayNha": "E",
+    "coSo": "CS3",
+    "giangVien": "Hồ Văn E",
+    "thoiGianHoc": "16:00 - 18:00"
+},
+{
+    "key": "6",
+    "stt": "6",
+    "lichHoc": "Thứ 5, Thứ 7",
+    "tenLopHocPhan": "NHÓM TH06",
+    "lopDuKien": "106",
+    "dayNha": "F",
+    "coSo": "CS3",
+    "giangVien": "Đặng Thị F",
+    "thoiGianHoc": "17:30 - 19:30"
+}
+]
