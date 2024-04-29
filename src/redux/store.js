@@ -1,8 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-import userSlice from './userSlice';
+import rootReducer from './rootReducer';
+import { createStore, applyMiddleware, compose } from 'redux'
 
-export default configureStore({
-    reducer: {
-      user: userSlice.reducer,
-    }
-});
+const store = createStore(rootReducer);
+try {
+} catch (error) {
+
+}
+
+export default store;
