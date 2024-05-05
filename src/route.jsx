@@ -6,6 +6,7 @@ import LoginPage from './pages/auth/auth.loginPage';
 import HomeSubLayout from './layouts/homeSubLayout';
 import FogotPassword from './components/login/fogotPassword';
 import FogotPage from './pages/auth/auth.fogotPasswordPage';
+import HomeCourseRegistration from './layouts/homeCourseRegistration';
 
 const routes = [
     {
@@ -26,6 +27,10 @@ const routes = [
     {
         path: '/fogotPassword',
         element: <FogotPage/>
+    },
+    {
+        path:'/courseRegistration',
+        element: <HomeCourseRegistration/>
     }
 ];
 
