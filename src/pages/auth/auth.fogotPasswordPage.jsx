@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import './auth.loginPage.scss'
-import Login from "../../components/login/login";
+import '../auth/auth.loginPage.scss'
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { Button, Form, Input, Layout } from 'antd';
 import { STATE } from "../../redux/types/type.app";
 import { useSelector } from "react-redux";
+import FogotPassword from "../../components/login/fogotPassword";
 
 const { Footer } = Layout;
 
-const LoginPage = () => {
+const FogotPage = () => {
     // Lấy dữ liệu từ localStorage với key 'selectedCourseData'
     const savedData = localStorage.getItem('userData');
     // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
@@ -42,7 +42,7 @@ const LoginPage = () => {
                 </div>
             </div>
             <div className="login-container">
-                <Login/>
+                <FogotPassword/>
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}
@@ -63,4 +63,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage;
+export default FogotPage;

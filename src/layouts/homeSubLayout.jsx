@@ -110,7 +110,7 @@ const homeSublayout = () => {
                     <img src={logo} style={{width:"100%"}}></img>
                 </Row>
                 <StudentInfo/>
-                <Content style={{backgroundColor:'#ffffff', color:"#EB7B21"}}>
+                <Content style={{backgroundColor:'#ffffff', color:"#EB7B21", border: '2px solid #E1EBF6', borderRadius:6, marginTop:10}}>
                     <h1 className="title2" style={{textAlign:'center', paddingTop:10, marginBottom:30, color:'#0C6FBE'}}>ĐĂNG KÝ HỌC PHẦN</h1>
                     <RegistrationControl/>
                     <Content>

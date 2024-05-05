@@ -15,11 +15,10 @@ const items = [
     },
     {
         key: '2',
-        label: <p className="title-login title-login--l">ĐỔI MẬT KHẨU</p>,
+        label: <p className="title-login title-login--l">QUÊN MẬT KHẨU</p>,
         children: <LoginQR />,
-    },
+    }
 ];
-
 
 const Login = () => {
     return (

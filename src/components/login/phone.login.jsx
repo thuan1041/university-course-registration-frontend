@@ -4,13 +4,15 @@ import { Button, Form, Input } from 'antd';
 import './phone.login.scss';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "../../utils/axios";
+import { loginSuccess } from "../../redux/actions/app.action";
 
 const LoginPhone = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    let state = useSelector(state => state?.appReducer)
 
     const handleLogin = async (values) => {
         const { studentId, password } = values;
@@ -27,6 +29,9 @@ const LoginPhone = () => {
                 console.log("Login response", response);
                 toast.success("Login successful!");
                 setTimeout(()=>{
+                    // dispatch(loginSuccess(response.data))
+                    const dataToSave = JSON.stringify(dispatch(loginSuccess(response.data)))
+                    localStorage.setItem('userData', dataToSave);
                     navigate(`/home`)
                 },[1000])
             } else {

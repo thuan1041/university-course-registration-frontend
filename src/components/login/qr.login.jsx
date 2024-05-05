@@ -18,30 +18,17 @@ const LoginQR = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+
         if (!onlyRender.current && !isConnected) {
             let token = uuidv4() + JSON.stringify(Date.now())
             setValue(token);
             // fetchWaitScanner(token);
-            socket.then((socket) => {
-                socket.emit('setup', token);
-                socket.on('connected', () => {
-                    setIsConnected(true);
-                    socket.emit('join-qr-room', token);
-                    socket.on('joined', () => {
-                        socket.on('need-to-verify', (data) => { // Khi người dùng quét mã
-                            setIsLoading(true);
-                            setTimeout(() => {
-                                setIsLoading(false);
-                                dispatch(loginStart(data));
-                                navigate(`/verify?id=${data.id}`);
-                            }, 1000);
-                        })
-                    })
-                })
-            })
         }
         onlyRender.current = true;
     });
+    const handleSendGmailFogotPassword = ()=>{
+        navigate('/fogotPassword')
+    }
     return (
         <Form
             name="normal_login"
@@ -51,13 +38,13 @@ const LoginQR = () => {
             size="large"
         >
         <Form.Item
-            name="phoneNumber"
+            name="studentId"
             rules={[{ required: true, message: 'Nhập mã sinh viên!' }]}
         >
-            <Input style={{ gap: '5px' }} prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Mã sinh viên" />
+            <Input style={{ gap: '5px' }} prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Student ID" />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
             name="password"
             rules={[{ required: true, message: 'Nhập mật khẩu hiện tại!' }]}
         >
@@ -69,19 +56,18 @@ const LoginQR = () => {
             rules={[{ required: true, message: 'Nhập nhận mật khẩu mới' }]}
         >
             <Input style={{ gap: '5px' }} prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Mật khẩu mới" />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item
+        {/* <Form.Item
             name="password"
             rules={[{ required: true, message: 'Nhập nhận mật khẩu mới' }]}
         >
             <Input style={{ gap: '5px' }} prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Xác nhận mật khẩu mới" />
-        </Form.Item>
-
+        </Form.Item> */}
 
         <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button" block>
-                    <span>Hoàn thành</span>
+                <Button type="primary" htmlType="submit" className="login-form-button" block onClick={handleSendGmailFogotPassword}>
+                    <span>Gởi yêu cầu</span>
                 </Button>
 
         </Form.Item>

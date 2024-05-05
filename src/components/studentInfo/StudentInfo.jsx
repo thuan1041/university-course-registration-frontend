@@ -4,9 +4,17 @@ import { Button, message } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Typography } from 'antd';
 import studentAvt from '../../../public/images/student_avt.jpg'
+import { useNavigate } from 'react-router-dom';
+
 const StudentInfo = () => {
+    const navigate = useNavigate();
     const handleLogout = () => {
         message.success('Đăng xuất thành công.');
+
+        setTimeout(()=>{
+            localStorage.clear()
+            navigate("/login")
+        },1500)
     }
   return (
     <Row style={{minHeight:50, backgroundColor:'#ffffff', border: '2px solid #E1EBF6', borderRadius:6}}>
