@@ -5,7 +5,7 @@ import ReminderBoard from './reminderBoard';
 
 const DashboardNotification = () => {
     return (
-        <Row gutter={[16, 16]} style={{padding:10, marginTop:-10}}> {/* Thêm gutter cho khoảng cách giữa các Card */}
+        <Row gutter={[16, 16]} style={{padding:10, marginTop:-10}}>
             <Col span={24}>
                 <Card>
                     <ReminderBoard index={0} />

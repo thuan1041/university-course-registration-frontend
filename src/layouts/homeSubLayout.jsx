@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Layout, Input, Button, Avatar, Menu, Dropdown, Row, Col } from 'antd';
+import { Layout, Input, Button, Avatar, Menu, Dropdown, Row, Col, message } from 'antd';
 import { HomeOutlined, BellOutlined, UserOutlined, DownOutlined } from '@ant-design/icons';
 import { Content } from "antd/es/layout/layout";
 import StudentDetail from "../components/studentInfo/StuddentDetail";
 import DashBoardMenu from "../components/dasdboard/DashbooardMenu";
 import DashboardLearningProgress from "../components/dasdboard/DashboardLearningProgress";
 import DashboardNotification from "../components/dasdboard/DashboardNotification";
-
+import { useNavigate } from "react-router-dom";
+import ChangePasswordModal from "../../src/modals/app/changePasswordModal";
+import axios from "../../src/utils/axios";
+import { useSelector } from "react-redux";
 const { Header, Footer } = Layout;
 const { Search } = Input;
 
@@ -15,21 +18,61 @@ const HomeSublayout = () => {
     const [selectedClass, setSelectedClass] = useState(null);
     const [showCoursePendingRegistered, setShowCoursePendingRegistered] = useState(false);
     const [showClassDetails, setShowClassDetails] = useState(false);
+    const navigate = useNavigate();
+    const state = useSelector(state => state?.appReducer);
+    console.log("hihi",state);
 
+    const handleLogout = () => {
+        message.success('Đăng xuất thành công.');
+
+        setTimeout(()=>{
+            localStorage.clear()
+            navigate("/login")
+        },1500)
+    }
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const openModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const closeModal = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleConfirmPasswordChange = async (oldPassword, newPassword) => {
+        const payload = {
+            "studentId": state.userInfo.studentId, 
+            "oldPassword": oldPassword, 
+            "newPassword": newPassword
+        }
+        try {
+            const rs = await axios.put(`/student/changePassword`, payload);
+            if(rs.errCode === 0){
+                localStorage.clear()
+                navigate("/login")
+                message.success('Đổi mật khẩu thành công');
+                closeModal()
+            } else {
+                message.error('Đổi mật khẩu thất bại');
+            }
+        } catch (error) {
+            console.log('handleConfirmPasswordChange', error);
+        }
+    }
     const userMenu = (
         <Menu>
             <Menu.Item key="profile">
                 <a href="#">Thông tin cá nhân</a>
             </Menu.Item>
             <Menu.Item key="changePassword">
-                <a href="#">Đổi mật khẩu</a>
+                <a type="button" onClick={openModal} href="#">Đổi mật khẩu</a>
             </Menu.Item>
             <Menu.Item key="logout">
-                <a href="#">Đăng xuất</a>
+                <a type="button" onClick={handleLogout}>Đăng xuất</a>
             </Menu.Item>
         </Menu>
     );
-
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Header className="header" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #ccc', padding: '0 200px', borderBlockColor:'#F5F5F5' }}>
@@ -50,7 +93,7 @@ const HomeSublayout = () => {
                             <Button type="text" icon={<BellOutlined />} title="Tin tức"/>
                             <Dropdown overlay={userMenu} trigger={['click']}>
                                 <Button type="text" icon={<Avatar icon={<UserOutlined />} />} style={{ marginLeft: 8 }}>
-                                    Trần Minh Thuận
+                                    {state.userInfo?.name}
                                     <DownOutlined/>
                                 </Button>
                             </Dropdown>
@@ -61,18 +104,24 @@ const HomeSublayout = () => {
             <Content style={{padding:'0 260px'}}>
                 <Row style={{padding:0, margin:10}}>
                     <Col span={15}>
-                        <StudentDetail/>
+                        <StudentDetail userInfo={state}/>
                     </Col>
                     <Col span={9}>
-                        <DashboardNotification/>
+                        <DashboardNotification style={{padding:10, marginRight:10}} /> 
                     </Col>
                 </Row>
-                <Row style={{padding:0, margin:10, marginTop:-10, backgroundColor:'red'}}>
+                <Row style={{padding:0, margin:10, marginTop:-10, marginRight:20}}>
                     <DashBoardMenu/>
                 </Row>
-                <Row style={{padding:0, margin:10}}>
+                <Row style={{padding:0, margin:10, marginRight:0}}>
                     <DashboardLearningProgress/>
                 </Row>
+                {/* modal */}
+                <ChangePasswordModal
+                visible={isModalVisible}
+                onCancel={closeModal}
+                onConfirm={handleConfirmPasswordChange}
+                />
             </Content>
             <Footer style={{ textAlign: 'center' }}>Ant Design ©2024 Created by You</Footer>
         </Layout>

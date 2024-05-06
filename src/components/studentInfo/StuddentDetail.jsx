@@ -3,7 +3,8 @@ import { Row, Col, Card, Avatar } from "antd";
 import './StudentDetail.scss';
 const { Meta } = Card;
 
-const StudentDetail = () => {
+const StudentDetail = ({userInfo}) => {
+  console.log("userInfo", userInfo);
   return (
     <Card title="Thông tin sinh viên" style={{ padding: 2 }}>
       <Row gutter={[16, 16]}>
