@@ -33,9 +33,9 @@ const DashBoardMenu = () => {
         <IconLinkCard icon={BookOutlined} title="Kết quả học tập" />
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xl={3}>
-        <a href="/courseRegistration">
+        {/* <a href="/courseRegistration"> */}
           <IconLinkCard icon={FormOutlined} title="Đăng ký học phần" />
-        </a>
+        {/* </a> */}
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xl={3}>
         <IconLinkCard icon={SearchOutlined} title="Tra cứu công nợ" />

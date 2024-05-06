@@ -20,7 +20,9 @@ const HomeSublayout = () => {
     const [showClassDetails, setShowClassDetails] = useState(false);
     const navigate = useNavigate();
     const state = useSelector(state => state?.appReducer);
-    console.log("hihi",state);
+    const userDataString = localStorage.getItem('userData');
+    const userData = JSON.parse(userDataString);
+    const userInfo = userData?.payload;
 
     const handleLogout = () => {
         message.success('Đăng xuất thành công.');
@@ -42,7 +44,7 @@ const HomeSublayout = () => {
 
     const handleConfirmPasswordChange = async (oldPassword, newPassword) => {
         const payload = {
-            "studentId": state.userInfo.studentId, 
+            "studentId": userInfo?.studentId, 
             "oldPassword": oldPassword, 
             "newPassword": newPassword
         }
@@ -93,7 +95,7 @@ const HomeSublayout = () => {
                             <Button type="text" icon={<BellOutlined />} title="Tin tức"/>
                             <Dropdown overlay={userMenu} trigger={['click']}>
                                 <Button type="text" icon={<Avatar icon={<UserOutlined />} />} style={{ marginLeft: 8 }}>
-                                    {state.userInfo?.name}
+                                    {userInfo.name}
                                     <DownOutlined/>
                                 </Button>
                             </Dropdown>
@@ -104,7 +106,7 @@ const HomeSublayout = () => {
             <Content style={{padding:'0 260px'}}>
                 <Row style={{padding:0, margin:10}}>
                     <Col span={15}>
-                        <StudentDetail userInfo={state}/>
+                        <StudentDetail userInfo={userInfo}/>
                     </Col>
                     <Col span={9}>
                         <DashboardNotification style={{padding:10, marginRight:10}} /> 

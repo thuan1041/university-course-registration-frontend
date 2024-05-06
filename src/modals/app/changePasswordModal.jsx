@@ -22,7 +22,7 @@ const ChangePasswordModal = ({ visible, onCancel, onConfirm }) => {
     return (
         <Modal
             title="Đổi mật khẩu"
-            visible={visible}
+            open={visible}
             onCancel={onCancel}
             footer={[
                 <Button key="cancel" onClick={onCancel}>
