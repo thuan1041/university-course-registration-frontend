@@ -5,6 +5,7 @@ import { Content } from "antd/es/layout/layout";
 import StudentDetail from "../components/studentInfo/StuddentDetail";
 import DashBoardMenu from "../components/dasdboard/DashbooardMenu";
 import DashboardLearningProgress from "../components/dasdboard/DashboardLearningProgress";
+import DashboardNotification from "../components/dasdboard/DashboardNotification";
 
 const { Header, Footer } = Layout;
 const { Search } = Input;
@@ -63,12 +64,10 @@ const HomeSublayout = () => {
                         <StudentDetail/>
                     </Col>
                     <Col span={9}>
-                        <div style={{ backgroundColor: "blue", height: "100px" }}>
-                        Phần bên phải
-                        </div>
+                        <DashboardNotification/>
                     </Col>
                 </Row>
-                <Row style={{padding:0, margin:10}}>
+                <Row style={{padding:0, margin:10, marginTop:-10, backgroundColor:'red'}}>
                     <DashBoardMenu/>
                 </Row>
                 <Row style={{padding:0, margin:10}}>
