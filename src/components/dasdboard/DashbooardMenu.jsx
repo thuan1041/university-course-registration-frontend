@@ -33,7 +33,9 @@ const DashBoardMenu = () => {
         <IconLinkCard icon={BookOutlined} title="Kết quả học tập" />
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xl={3}>
-        <IconLinkCard icon={FormOutlined} title="Đăng ký học phần" />
+        <a href="/courseRegistration">
+          <IconLinkCard icon={FormOutlined} title="Đăng ký học phần" />
+        </a>
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xl={3}>
         <IconLinkCard icon={SearchOutlined} title="Tra cứu công nợ" />
@@ -52,7 +54,7 @@ const DashBoardMenu = () => {
           text.split("\n").map((line, index) => (
             <p style={{ fontSize: 14 }} key={index}>{line}</p>
           ))
-        } />
+        }/>
       </Col>
     </Row>
   );

@@ -4,6 +4,7 @@ import { HomeOutlined, BellOutlined, UserOutlined, DownOutlined } from '@ant-des
 import { Content } from "antd/es/layout/layout";
 import StudentDetail from "../components/studentInfo/StuddentDetail";
 import DashBoardMenu from "../components/dasdboard/DashbooardMenu";
+import DashboardLearningProgress from "../components/dasdboard/DashboardLearningProgress";
 
 const { Header, Footer } = Layout;
 const { Search } = Input;
@@ -69,6 +70,9 @@ const HomeSublayout = () => {
                 </Row>
                 <Row style={{padding:0, margin:10}}>
                     <DashBoardMenu/>
+                </Row>
+                <Row style={{padding:0, margin:10}}>
+                    <DashboardLearningProgress/>
                 </Row>
             </Content>
             <Footer style={{ textAlign: 'center' }}>Ant Design ©2024 Created by You</Footer>
