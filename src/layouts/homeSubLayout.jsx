@@ -75,6 +75,33 @@ const HomeSublayout = () => {
             </Menu.Item>
         </Menu>
     );
+
+    const [email, setEmail] = useState("");
+    const [spiner,setSpiner] = useState(false);
+        // sendotp
+    const sendOtp = async (e) => {
+        e.preventDefault();
+
+        if (email === "") {
+            toast.error("Enter Your Email !")
+        } else if (!email.includes("@")) {
+            toast.error("Enter Valid Email !")
+        } else {
+            setSpiner(true)
+            const data = {
+                email: email
+            }
+
+            const response = await axios.post("/user/send-otp", data);
+
+            if (response.status === 200) {
+                setSpiner(false)
+                // navigate("/user/otp",{state:email})
+            } else {
+                toast.error(response.response.data.error);
+            }
+        }
+    }
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Header className="header" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #ccc', padding: '0 200px', borderBlockColor:'#F5F5F5' }}>
@@ -124,6 +151,9 @@ const HomeSublayout = () => {
                 onCancel={closeModal}
                 onConfirm={handleConfirmPasswordChange}
                 />
+                <Row>
+                    {/* <Button type="primary" onClick={sendOtp}>Open Modal</Button> */}
+                </Row>
             </Content>
             <Footer style={{ textAlign: 'center' }}>Ant Design ©2024 Created by You</Footer>
         </Layout>
