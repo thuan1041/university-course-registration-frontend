@@ -7,10 +7,30 @@ import './Course.scss';
 import { Radio } from 'antd';
 import axios from '../../utils/axios';
 
-const CoursePendingRegistered = ({ selectedCourse, onClassRowClick }) => {
+const CoursePendingRegistered = ({ selectedCourse, onClassRowClick, courseId }) => {
+    console.log("courseId 2", courseId);
     const [selectedRowKey, setSelectedRowKey] = useState(null);
     const [classRegistration, setClassRegistration] = useState();
     const [loading, setLoading] = useState(true); // State để theo dõi trạng thái loading
+    
+    // update
+    const [getClassByCourse,setGetClassByCourse] = useState()
+
+    useEffect(() => {
+        fetchClassByCourse()
+    },[courseId])
+    async function fetchClassByCourse (){
+        const payload = {
+            "course": courseId
+        }
+        const rs = await axios.post(`/course/getClassByCourse`, payload)
+        if(rs.errCode ===0){
+            setGetClassByCourse(rs.data)
+            console.log("rs2",rs.data);
+        } else {
+    
+        }
+    }
 
     useEffect(() => {
         if (selectedCourse) {
@@ -47,36 +67,26 @@ const CoursePendingRegistered = ({ selectedCourse, onClassRowClick }) => {
             render: (text, record, index) => index + 1,
         },
         {
-          title: 'Tên học phần',
-          dataIndex: 'name',
+          title: 'Mã LHP',
+          dataIndex: '_id',
+          render: (_id)=> `LHP${_id.slice(-8)}`
         },
         {
-          title: 'Số tín chỉ',
-          dataIndex: 'credit',
+            title: 'Tên lớp học phần',
+            dataIndex: 'courseId',
+            render: (text, record) => record?.courseId?.name,
         },
         {
-          title: 'Giảng viên',
-          dataIndex: 'classes[0].instructor',
-        },
-        {
-          title: 'Phòng học',
-          dataIndex: 'classes[0].room',
-        },
-        {
-          title: 'Thời gian học',
-          dataIndex: 'classes[0].classSchedule.weekDay',
-        //   render: (weekDay, record) => `${weekDay} - ${record.classes[0].classSchedule.start}-${record.classes[0].classSchedule.end}`,
-        },
-        {
-          title: 'Sĩ số tối đa',
-          dataIndex: 'classes[0].maxStudents',
+          title: 'Lớp dự kiến',
+            dataIndex: 'className',
+            render: className => "DHKTPM16A"
         },
         {
           title: 'Số lượng đã đăng ký',
-          dataIndex: 'classes[0].registeredStudents.length',
+            dataIndex: 'registeredStudents',
+            render: registeredStudents => registeredStudents?.length
         },
       ];
-
 
     return (
         <div>
@@ -85,18 +95,7 @@ const CoursePendingRegistered = ({ selectedCourse, onClassRowClick }) => {
             ) : (
                 <Table
                 columns={columns}
-                dataSource={[classRegistration].map(item => ({
-                    key: item._id,
-                    name: item.name,
-                    credit: item.credit,
-                    ...(item.classes && item.classes.length > 0 && {
-                        'classes[0].instructor': item.classes[0]?.instructor,
-                        'classes[0].room': item.classes[0]?.room,
-                        'classes[0].classSchedule.weekDay': item.classes[0]?.classSchedule?.weekDay,
-                        'classes[0].maxStudents': item.classes[0]?.maxStudents,
-                        'classes[0].registeredStudents.length' : item?.classes[0]?.registeredStudents?.length
-                    }),
-                }))}
+                dataSource={getClassByCourse}
                 onRow={(record) => ({
                     onClick: () => handleRowClick(record),
                 })}

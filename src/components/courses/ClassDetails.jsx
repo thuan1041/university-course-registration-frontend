@@ -11,25 +11,32 @@ import { Form, Select, Button } from 'antd';
 const { Option } = Select;
 
 
-const ClassDetails = (selectedClass) => {
-  console.log(selectedClass);
+const ClassDetails = ({selectedClass, onClassDetailRowClick}) => {
+
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedRowKey, setSelectedRowKey] = useState(null);
-  
+
+    const [arrayData, setArrayData] = useState([]);
     const handleRowClick = (record) => {
-      setSelectedCourse(record);
-      setIsModalVisible(true);
+      onClassDetailRowClick(record);
+      // setSelectedCourse(record);
+      // setIsModalVisible(true);
     };
+
   
     const handleCloseModal = () => {
-      setIsModalVisible(false);
+      // setIsModalVisible(false);
       setSelectedCourse(null);
     };
   
     const handleRadioChange = (key) => {
       setSelectedRowKey(key);
     };
+  
+    useEffect(() => {
+      setArrayData([selectedClass]);
+    }, [selectedClass]);
   
     const columns = [
         {
@@ -49,7 +56,8 @@ const ClassDetails = (selectedClass) => {
 
         {
           title: 'Lịch học',
-          dataIndex: 'lichHoc',
+          dataIndex: 'classSchedule',
+          render: classSchedule => `Thứ ${classSchedule?.weekDay}, Tiết ${classSchedule?.start} - ${classSchedule?.end}`
         },
         {
           title: 'Nhóm TH',
@@ -57,23 +65,23 @@ const ClassDetails = (selectedClass) => {
         },
         {
           title: 'Phòng',
-          dataIndex: 'lopDuKien',
+          dataIndex: 'room',
         },
         {
           title: 'Dãy nhà',
-          dataIndex: 'dayNha',
+          dataIndex: 1,
         },
         {
           title: 'Cơ sở',
-          dataIndex: 'coSo',
+          dataIndex: 1,
         },
         {
           title: 'Giảng viên',
-          dataIndex: 'giangVien',
+          dataIndex: 'instructor',
         },
         {
           title: 'Thời gian học',
-          dataIndex: 'thoiGianHoc',
+          dataIndex: 4,
         }
     ];
     const onFinish = (values) => {
@@ -98,7 +106,7 @@ const ClassDetails = (selectedClass) => {
         </Form>
         <Table
           columns={columns}
-          dataSource={dataClassDetails}
+          dataSource={arrayData}
           onRow={(record) => ({
             onClick: () => handleRowClick(record),
           })}
@@ -107,8 +115,7 @@ const ClassDetails = (selectedClass) => {
           pagination={false}
         //   bordered
         //   rowClassName={() => 'fixed-height-row'}
-        />
-  
+        />     
         <Modal
           title="Course Details"
           open={isModalVisible}

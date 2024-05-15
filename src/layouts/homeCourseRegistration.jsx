@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import './homeSubLayout.scss';
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
-import { Col, Drawer, Row, Select, theme } from 'antd';
+import { Button, Col, Drawer, Form, Row, Select, theme } from 'antd';
 import {Layout} from 'antd'
 import logo from '../../public/images/dai-hoc-cong-nghiep-bacground.png'
 import Courses from "../components/courses/Courses";
@@ -19,12 +19,22 @@ const {Header, Content, Footer} = Layout;
 const homeCourseRegistration = () => {
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [selectedClass, setSelectedClass] = useState(null);
+    const [selectedClassDetail, setSelectedClassDetail] = useState(null);
     const [showCoursePendingRegistered, setShowCoursePendingRegistered] = useState(false);
     const [showClassDetails, setShowClassDetails] = useState(false);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    // Lấy dữ liệu từ localStorage với key 'selectedCourseData'
+    const savedData = localStorage.getItem('userData');
+    // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
+    const parsedData = JSON.parse(savedData);
+    // Sử dụng dữ liệu đã lấy từ localStorage
+    console.log("user",parsedData.payload.major._id);
 
     // Hàm callback để xử lý khi chọn một dòng từ Courses
     const handleCourseRowClick = (record) => {
         setSelectedCourse(record);
+        console.log("record",record);
         setShowCoursePendingRegistered(true);
         setShowClassDetails(false);
     };
@@ -34,74 +44,34 @@ const homeCourseRegistration = () => {
         setSelectedClass(record);
         setShowClassDetails(true);
     };
+    const handleClassDetailRowClick = (record) => {
+        setIsButtonDisabled(false);
+        setSelectedClassDetail(record)
+    }
 
     useEffect(()=>{
-        fetchGetClassByMajor()
-        fetchGetAllCourses()
+        fetchGetCourseByMajor()
     }, [])
-    
-    const [getAllCoursesData,setGetAllCoursesData] = useState()
-    const [getClassByMajorData,setGetClassByMajorData] = useState()
 
-    async function fetchGetClassByMajor (){
+
+    const [getCourseByMajor,setGetCourseByMajor] = useState()
+
+
+    async function fetchGetCourseByMajor (){
         const payload = {
-          "major": "66265ec3bd56e143ee8eb1c1"
+          "major": parsedData?.payload?.major?._id
         }
-        const rs = await axios.post(`/course/getClassByMajor`, payload)
+        const rs = await axios.post(`/course/getCourceByMajor`, payload)
         if(rs.errCode ===0){
-          setGetClassByMajorData(rs.data)
+            setGetCourseByMajor(rs.data)
+            console.log(rs.data);
         } else {
     
         }
     }
-    async function fetchGetAllCourses(){
-    const rs = await axios.post(`/course/getAllCourses`)
-    if(rs.errCode ===0){
-        setGetAllCoursesData(rs.data)
-    } else {
+    const handleRegisterCourse = () => {
+        console.log("selectedClass", selectedClass);
     }
-    }
-    const mergeData = (getAllCoursesData, getClassByMajorData) => {
-    // Check if data arrays exist and have data
-    if (!getAllCoursesData || !Array.isArray(getAllCoursesData) || !getClassByMajorData || !Array.isArray(getClassByMajorData)) {
-        return [];
-    }
-    
-    const mergedData = {};
-    
-    // Iterate through the getAllCoursesData array and populate the mergedData object
-    getAllCoursesData.forEach(course => {
-        mergedData[course._id] = { ...course };
-    });
-    
-    // Iterate through the getClassByMajorData array and merge data with existing courses
-    getClassByMajorData.forEach(classData => {
-        const courseId = classData.courseId?._id;
-        if (courseId && mergedData[courseId]) {
-        if (!mergedData[courseId].classes) {
-            mergedData[courseId].classes = [];
-        }
-        mergedData[courseId].classes.push(classData);
-        }
-    });
-    
-    // Convert mergedData object to an array
-    const mergedArray = Object.values(mergedData);
-    
-    return mergedArray;
-    };
-    
-    // Usage example
-    const mergedData = mergeData(getAllCoursesData, getClassByMajorData);
-    // console.log("mergedData", JSON.stringify(mergedData));
-
-    // Thêm thuộc tính key cho mỗi phần tử trong mergedData
-    const mergedDataWithKeys = mergedData.map((item, index) => ({
-    ...item,
-    key: index, // Sử dụng index của mỗi phần tử trong mảng làm key
-    }));
-
-// console.log("mergedDataWithKeys", mergedDataWithKeys);
 
     return (
         <Layout style={{ minHeight: '100vh'}}>
@@ -121,20 +91,31 @@ const homeCourseRegistration = () => {
                         <h3 className="title2" style={{textAlign:'center', paddingTop:30, marginBottom:20}}>CHI TIẾT LỚP HỌC PHẦN</h3>
                         <ClassDetails/> */}
                         <h3 className="title2" style={{ textAlign: 'center', paddingTop: 30, marginBottom: 20 }}>MÔN HỌC PHẦN ĐANG CHỜ ĐƯỢC ĐĂNG KÝ</h3>
-                        <Courses allCoursesData={mergedDataWithKeys} onCourseRowClick={handleCourseRowClick} />
+                        {/* <Courses allCoursesData={mergedDataWithKeys} onCourseRowClick={handleCourseRowClick} /> */}
+                        <Courses allCoursesData={getCourseByMajor} onCourseRowClick={handleCourseRowClick} />
                         {showCoursePendingRegistered &&
                             <>
                                 <h3 className="title2" style={{ textAlign: 'center', paddingTop: 30, marginBottom: 20 }}>LỚP HỌC PHẦN ĐANG CHỜ ĐƯỢC ĐĂNG KÝ</h3>
-                                <CoursePendingRegistered selectedCourse={selectedCourse} onClassRowClick={handleClassRowClick} />
+                                {/* <CoursePendingRegistered selectedCourse={selectedCourse} onClassRowClick={handleClassRowClick} /> */}
+                                <CoursePendingRegistered selectedCourse={selectedCourse} onClassRowClick={handleClassRowClick} courseId={selectedCourse?._id} />
                             </>
                         }
                         {showClassDetails &&
                             <>
                                 <h3 className="title2" style={{ textAlign: 'center', paddingTop: 30, marginBottom: 20 }}>CHI TIẾT LỚP HỌC PHẦN</h3>
-                                <ClassDetails selectedClass={selectedClass} />
+                                <ClassDetails selectedClass={selectedClass} onClassDetailRowClick={handleClassDetailRowClick} classId={selectedClass?._id} courseId={selectedCourse?._id}/>
                             </>
                         }
                     </Content>
+
+                    <Form.Item  style={{display:'flex', alignItems:"center", justifyContent:'center', paddingTop: 30, marginBottom: 20}}>
+                        <Button type="primary" style={{ border: 'none' }}
+                            className={isButtonDisabled ? 'visibility-button' : 'visibility-button'}
+                            disabled={isButtonDisabled}
+                            onClick={handleRegisterCourse}
+                        >Đăng ký môn học</Button>
+                    </Form.Item>
+                    
                 </Content>
             </Content>
             <Footer style={{ textAlign: 'center' }}>Ant Design ©2024 Created by You</Footer>
