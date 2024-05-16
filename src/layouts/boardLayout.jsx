@@ -73,6 +73,80 @@ const dataFetch = [{
             "__v": 2
         },
         {
+            "_id": "664604bfe95feb70c573e80d",
+            "courseId": "66275e06c5bae68b2606b620",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Nghĩa",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
+                "weekDay": 2,
+                "start": 1,
+                "end": 3,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 4,
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 1,
+                    "end": 3
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        },
+        {
+            "_id": "664604bfe95feb70c573e80d",
+            "courseId": "66275e06c5bae68b2606b620",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Nghĩa",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
+                "weekDay": 8,
+                "start": 1,
+                "end": 3,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 4,
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 1,
+                    "end": 3
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        },
+        {
             "_id": "664604bfe95feb70c573e866",
             "courseId": "66275e06c5bae68b2606b6320",
             "major": "66265ec3bd56e143ee8eb1c1",
@@ -397,16 +471,24 @@ const fetchDataTimeTable = () => {
     console.log("dataAfterCluster_AfterNoon", dataAfterCluster.afternoon);
     console.log("dataAfterCluster_Evening", dataAfterCluster.evening);
 
-    // {
-    //     "weekDay": 8,
-    //     "start": 10,
-    //     "end": 12,
-    //     "_id": "664604bfe95feb70c573e80f",
-    //     "instructor": "Võ Văn Thái",
-    //     "room": "X10.08",
-    //     "name":"Lập trình WWW"
-    // },
-    
+    const handleDataTimeGrouping = (dataCluster) => {
+        const dataTimeGrouping = ['null', 'null', 'null', 'null', 'null', 'null', 'null'];
+        for (let i = 0; i < dataCluster.length; i++) {
+            const item = dataCluster[i];
+            if (item.weekDay != null) {
+                const position = item.weekDay - 2;
+                if (position >= 0 && position < 7) {
+                    dataTimeGrouping[position] = item;
+                }
+            }
+        }
+        return dataTimeGrouping;
+    }
+    const dataAfterGrouping = handleDataTimeGrouping(dataAfterCluster.morning)
+    console.log("dataAfterGorupingMoring", dataAfterGrouping);
+    return (
+        dataAfterGrouping
+    )
 }
 
 
@@ -443,7 +525,7 @@ const ItemTimeTable = ({subject}) => {
     return (
         <Card style={{backgroundColor:"#E7ECF0", width:'100px', minHeight:'250px'}}>
             <p style={{fontWeight:'700', fontSize:11, width:70, marginLeft:-6}}>{subject.name}</p>
-            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`KTPM16A - LHP${subject?._id.slice(-8)}`.toUpperCase()}</p>
+            {/* <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`KTPM16A - LHP${subject?._id.slice(-8)}`.toUpperCase()}</p> */}
             <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`Tiết: ${subject?.start} - ${subject?.end}`}</p>
             <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`Phòng: ${subject?.room}`}</p>
             <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`GV: ${subject?.instructor}`}</p>
@@ -498,7 +580,7 @@ const MySidebar = () => {
     );
   };
 
-  const TimeTable = ({dayOfWeek, selectedData, currentDayOfWeek, currentDay}) => {
+  const TimeTable = ({dayOfWeek, selectedData, currentDayOfWeek, currentDay, dataFetch}) => {
     const handleCurrentDay = (currentDayOfWeek, currentDay) => {
         const selectedDate = moment(currentDayOfWeek, 'dd-mm-yyyy');
         switch (currentDay) {
@@ -656,6 +738,7 @@ const MySidebar = () => {
     const dataChangeDays = handleDayOfWeek(dayOfWeek, selectedData);
     const dataCurrentDay = handleCurrentDay(currentDayOfWeek, currentDay);
 
+    console.log("daaFretch", dataFetch[1]);
     return (
         <Content>
             {(dataCurrentDay != null && dataChangeDays=='') ? (
@@ -735,7 +818,7 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <RenderTimeTableOnRow data={timeTableMorning}/>
+                        <RenderTimeTableOnRow data={[dataFetch]}/>
                     </Row>
                 </Col>
             </Row>
@@ -745,7 +828,8 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <RenderTimeTableOnRow data={timeTableAfternoon}/>
+                        {/* <RenderTimeTableOnRow data={timeTableAfternoon}/> */}
+                        <RenderTimeTableOnRow data={[dataFetch]}/>
                     </Row>
                 </Col>
             </Row>
@@ -764,7 +848,7 @@ const MySidebar = () => {
 
     const { RangePicker } = DatePicker
 
-    const MyContent = ({handleDataPickerChange, dayOfWeek, selectedData}) => {
+    const MyContent = ({handleDataPickerChange, dayOfWeek, selectedData, dataFetch}) => {
         const [radioValue, setRadioValue] = React.useState('all');
         const [isLoading, setIsLoading] = useState(true);
         const currentDayOfWeek = moment().format('dd-mm-yyyy');
@@ -812,7 +896,7 @@ const MySidebar = () => {
                 </Content>
             </Row>
             <Row>
-                <TimeTable dayOfWeek={dayOfWeek} selectedData={selectedData} setIsLoading={setIsLoading} currentDayOfWeek={currentDayOfWeek} currentDay={currentDay}/>
+                <TimeTable dayOfWeek={dayOfWeek} selectedData={selectedData} setIsLoading={setIsLoading} currentDayOfWeek={currentDayOfWeek} currentDay={currentDay} dataFetch={dataFetch}/>
             </Row>
         </>
     );
@@ -830,11 +914,12 @@ const BoardLayout = () => {
     const userInfo = userData?.payload;
     const [selectedData, setSelectedData] = useState(null);
     const [dayOfWeek, setDayOfWeek] = useState(null);
+    const [dataFetch,setDataFetch]  = useState(null);
 
     useEffect(() => {
-        fetchDataTimeTable()
+        const dataFetch = fetchDataTimeTable()
+        setDataFetch(dataFetch)
     }, []);
-
 
     const handleDataPickerChange = (date, dateString) => {
         const selectedDateMoment = moment(dateString, 'YYYY-MM-DD');
@@ -960,7 +1045,7 @@ const BoardLayout = () => {
                         {/* {isLoading ? (
                             <p>Loading...</p>
                         ) :( */}
-                            <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData}/>
+                            <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData} dataFetch={dataFetch}/>
                         {/* )
                         } */}
                     </Col>
