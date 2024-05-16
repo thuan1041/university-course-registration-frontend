@@ -120,47 +120,172 @@ const datafake1 = [
 const datafake2 = datafake1.map(item => item.currentCourses)
 console.log("datafake2", datafake2);
 
-
-const RenderTimeTableOnRow = ({data}) => {
-    const timeTables = [
-        ['Math', 'English', 'History', 'null', 'PE', 'Music', '11'],
-        ['Physics', 'null', 'Biology', 'null', 'PE', 'Drama', 'null'],
-    ];
-
-    const timeTables2 = [
-        [{"classSchedule": {
-            "weekDay": 4,
+const timeTableMorning = [
+    [
+        {
+            "weekDay": 2,
             "start": 1,
             "end": 3,
-            "_id": "664604bfe95feb70c573e80f"
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Võ Văn Hải",
+            "room": "X10.08",
+            "name":"Lập trình phân tán"
         },
-        "practiceSchedule": [
-            {
-                "group": 1,
-                "weekDay": 4,
-                "start": 1,
-                "end": 3
-            },
-            {
-                "group": 2,
-                "weekDay": 8,
-                "start": 1,
-                "end": 3
-            }
-        ]}
-        ,'3', '3null','n3ull','n3ull','null', 'nu'
-        ],
-    ];
+        'null', 
+        'null', 
+        {
+            "weekDay": 5,
+            "start": 1,
+            "end": 3,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Nguyễn Thị Thanh",
+            "room": "A.01",
+            "name":"Lập trình Java"
+        },
+        'null',
+        {
+            "weekDay": 7,
+            "start": 1,
+            "end": 3,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Trần Minh Thuận",
+            "room": "X10.08",
+            "name":"Kiến trúc và Thiết kế phần mềm"
+        },
+        'null'
+    ],
+    [
+        {
+            "weekDay": 2,
+            "start": 4,
+            "end": 6,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Trần Minh Thuận",
+            "room": "X10.08",
+            "name": "Kiến trúc và Thiết kế phần mềm",
+        },
+        'null', 
+        {
+            "weekDay": 4,
+            "start": 4,
+            "end": 5,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Võ Văn Thái",
+            "room": "X10.08",
+            "name":"Lập trình WWW"
+        },
+        'null', 
+        'null',
+        {
+            "weekDay": 7,
+            "start": 5,
+            "end": 6,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Võ Văn Hải",
+            "room": "X10.08",
+            "name":"Lập trình phân tán"
 
+        },
+        {
+            "weekDay": 8,
+            "start": 4,
+            "end": 6,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Võ Văn Thái",
+            "room": "X10.08",
+            "name":"Lập trình WWW"
+        },
+    ],
+];
+
+const timeTableAfternoon = [
+    [
+        {
+            "weekDay": 2,
+            "start": 7,
+            "end": 9,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Võ Văn Hải",
+            "room": "X10.08",
+            "name":"Lập trình phân tán",
+        },
+        'null', 
+        'null', 
+        {
+            "weekDay": 5,
+            "start": 7,
+            "end": 9,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Nguyễn Thị Thanh",
+            "room": "A.01",
+            "name":"Java"
+        },
+        'null',
+        {
+            "weekDay": 7,
+            "start": 8,
+            "end": 9,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Trần Minh Thuận",
+            "room": "X10.08",
+            "name":"Kiến trúc và Thiết kế phần mềm"
+        },
+        'null'
+    ],
+    [
+        {
+            "weekDay": 2,
+            "start": 10,
+            "end": 12,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Trần Minh Thuận",
+            "room": "X10.08",
+            "name":"Kiến trúc và Thiết kế phần mềm"
+        },
+        'null', 
+        {
+            "weekDay": 4,
+            "start": 10,
+            "end": 12,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Võ Văn Thái",
+            "room": "X10.08",
+            "name":"Lập trình WWW"
+        },
+        'null', 
+        'null',
+        {
+            "weekDay": 7,
+            "start": 9,
+            "end": 12,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Võ Văn Hải",
+            "room": "X10.08",
+            "name":"Lập trình Lập trình phân tán"
+        },
+        {
+            "weekDay": 8,
+            "start": 10,
+            "end": 12,
+            "_id": "664604bfe95feb70c573e80f",
+            "instructor": "Võ Văn Thái",
+            "room": "X10.08",
+            "name":"Lập trình WWW"
+        },
+    ],
+];
+
+
+const RenderTimeTableOnRow = ({data}) => {
     const rows = [];
 
-    for (let i = 0; i < timeTables2.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         const cols = [];
-        for (let j = 0; j < timeTables2[i].length; j++) {
-            if(timeTables2[i][j] != 'null') {
+        for (let j = 0; j < data[i].length; j++) {
+            if(data[i][j] != 'null') {
                 cols.push(
                     <Col key={j} span={3} style={{ margin: 6 }}>
-                        <ItemTimeTable subject={timeTables2[i][j]} />
+                        <ItemTimeTable subject={data[i][j]} />
                     </Col>
                 );
             } else {
@@ -172,23 +297,23 @@ const RenderTimeTableOnRow = ({data}) => {
             }
         }
         rows.push(
-            <Row key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Row key={i} style={{ display: 'flex', justifyContent: 'center' }}>
                 {cols}
             </Row>
         );
     }
-
     return <>{rows}</>;
 }
 
 const ItemTimeTable = ({subject}) => {
+    console.log("subject", subject);
     return (
-        <Card style={{backgroundColor:"#E7ECF0", width:'100px'}}>
-            <p style={{fontWeight:'700', fontSize:11, width:70, marginLeft:-6}}>Kiến trúc và Thiết kế phần mềm</p>
-            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}></p>
-            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>Tiết: 5 - 6</p>
-            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>Phòng: X10.08</p>
-            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>GV: Võ Văn Hải</p>
+        <Card style={{backgroundColor:"#E7ECF0", width:'100px', minHeight:'250px'}}>
+            <p style={{fontWeight:'700', fontSize:11, width:70, marginLeft:-6}}>{subject.name}</p>
+            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`KTPM16A - LHP${subject?._id.slice(-8)}`.toUpperCase()}</p>
+            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`Tiết: ${subject?.start} - ${subject?.end}`}</p>
+            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`Phòng: ${subject?.room}`}</p>
+            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`GV: ${subject?.instructor}`}</p>
         </Card>
     )
 }
@@ -283,10 +408,7 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <Col span={12}></Col>
-                        <Col span={3} style={{marginLeft:36}}>
-                            <ItemTimeTable/>
-                        </Col>
+                        <RenderTimeTableOnRow data={timeTableMorning}/>
                     </Row>
                 </Col>
             </Row>
@@ -296,9 +418,7 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        {/* <Col span={3} style={{margin:6}}>
-                            <ItemTimeTable/>
-                        </Col> */}
+                        <RenderTimeTableOnRow data={timeTableAfternoon}/>
                     </Row>
                 </Col>
             </Row>
@@ -331,7 +451,6 @@ const MySidebar = () => {
                         </Col>
                     </Row> */}
                     <Row>
-                        <RenderTimeTableOnRow/>
                     </Row>
                 </Col>
             </Row>
