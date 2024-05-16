@@ -289,11 +289,35 @@ const MySidebar = () => {
                     moment(selectedDate).add(6, 'days')
                 ]
             case 'Tuesday':
-                return 'Thứ 3';
+                return [
+                    moment(selectedDate).add(-1, 'days'),  
+                    moment(selectedDate).add(0, 'days'), 
+                    moment(selectedDate).add(1, 'days'), 
+                    moment(selectedDate).add(2, 'days'),
+                    moment(selectedDate).add(3, 'days'),
+                    moment(selectedDate).add(4, 'days'),
+                    moment(selectedDate).add(5, 'days')
+                ]
             case 'Wednesday':
-                return 'Thứ 4';
+                return [
+                    moment(selectedDate).add(-2, 'days'),  
+                    moment(selectedDate).add(-1, 'days'), 
+                    moment(selectedDate).add(0, 'days'), 
+                    moment(selectedDate).add(1, 'days'),
+                    moment(selectedDate).add(3, 'days'),
+                    moment(selectedDate).add(3, 'days'),
+                    moment(selectedDate).add(4, 'days')
+                ]
             case 'Thursday':
-                return 'Thứ 5';
+                return [
+                    moment(selectedDate).add(-3, 'days'),  
+                    moment(selectedDate).add(-2, 'days'), 
+                    moment(selectedDate).add(-1, 'days'), 
+                    moment(selectedDate).add(0, 'days'),
+                    moment(selectedDate).add(1, 'days'),
+                    moment(selectedDate).add(2, 'days'),
+                    moment(selectedDate).add(3, 'days')
+                ]
             case 'Friday':
                 return [
                     moment(selectedDate).add(-4, 'days'),  
@@ -305,9 +329,25 @@ const MySidebar = () => {
                     moment(selectedDate).add(2, 'days')
                 ]
             case 'Saturday':
-                return 'Thứ 7';
+                return [
+                    moment(selectedDate).add(-5, 'days'),  
+                    moment(selectedDate).add(-4, 'days'), 
+                    moment(selectedDate).add(-3, 'days'), 
+                    moment(selectedDate).add(-2, 'days'),
+                    moment(selectedDate).add(-1, 'days'),
+                    moment(selectedDate).add(0, 'days'),
+                    moment(selectedDate).add(1, 'days')
+                ]
             case 'Sunday':
-                return 'Chủ nhật';
+                return [
+                    moment(selectedDate).add(-6, 'days'),  
+                    moment(selectedDate).add(-5, 'days'), 
+                    moment(selectedDate).add(-4, 'days'), 
+                    moment(selectedDate).add(-3, 'days'),
+                    moment(selectedDate).add(-2, 'days'),
+                    moment(selectedDate).add(-1, 'days'),
+                    moment(selectedDate).add(0, 'days')
+                ]
             default:
                 return '';
         }
@@ -316,38 +356,86 @@ const MySidebar = () => {
         const selectedDate = moment(dateString, 'YYYY-MM-DD');
         switch (dayOfWeek) {
             case 0:
-                var arrDays = [
+                return [
                     moment(selectedDate), 
                     moment(selectedDate).add(1, 'days'), 
                     moment(selectedDate).add(2, 'days'), 
                     moment(selectedDate).add(3, 'days'),
                     moment(selectedDate).add(4, 'days'),
                     moment(selectedDate).add(5, 'days'),
-                    moment(selectedDate).add(6, 'days'),]
-                return arrDays;
+                    moment(selectedDate).add(6, 'days')
+                ]
             case 1:
-                return 'Thứ 2';
+                return [
+                    moment(selectedDate).add(-1, 'days'),  
+                    moment(selectedDate).add(0, 'days'), 
+                    moment(selectedDate).add(1, 'days'), 
+                    moment(selectedDate).add(2, 'days'),
+                    moment(selectedDate).add(3, 'days'),
+                    moment(selectedDate).add(4, 'days'),
+                    moment(selectedDate).add(5, 'days')
+                ]
             case 2:
-                return 'Thứ 3';
+                return [
+                    moment(selectedDate).add(-2, 'days'),  
+                    moment(selectedDate).add(-1, 'days'), 
+                    moment(selectedDate).add(0, 'days'), 
+                    moment(selectedDate).add(1, 'days'),
+                    moment(selectedDate).add(3, 'days'),
+                    moment(selectedDate).add(3, 'days'),
+                    moment(selectedDate).add(4, 'days')
+                ]
             case 3:
-                return 'Thứ 4';
+                return [
+                    moment(selectedDate).add(-3, 'days'),  
+                    moment(selectedDate).add(-2, 'days'), 
+                    moment(selectedDate).add(-1, 'days'), 
+                    moment(selectedDate).add(0, 'days'),
+                    moment(selectedDate).add(1, 'days'),
+                    moment(selectedDate).add(2, 'days'),
+                    moment(selectedDate).add(3, 'days')
+                ]
             case 4:
-                return 'Thứ 5';
+                return [
+                    moment(selectedDate).add(-4, 'days'),  
+                    moment(selectedDate).add(-3, 'days'), 
+                    moment(selectedDate).add(-2, 'days'), 
+                    moment(selectedDate).add(-1, 'days'),
+                    moment(selectedDate).add(0, 'days'),
+                    moment(selectedDate).add(1, 'days'),
+                    moment(selectedDate).add(2, 'days')
+                ]
             case 5:
-                return 'Thứ 6';
+                return [
+                    moment(selectedDate).add(-5, 'days'),  
+                    moment(selectedDate).add(-4, 'days'), 
+                    moment(selectedDate).add(-3, 'days'), 
+                    moment(selectedDate).add(-2, 'days'),
+                    moment(selectedDate).add(-1, 'days'),
+                    moment(selectedDate).add(0, 'days'),
+                    moment(selectedDate).add(1, 'days')
+                ]
             case 6:
-                return 'Thứ 7';
+                return [
+                    moment(selectedDate).add(-6, 'days'),  
+                    moment(selectedDate).add(-5, 'days'), 
+                    moment(selectedDate).add(-4, 'days'), 
+                    moment(selectedDate).add(-3, 'days'),
+                    moment(selectedDate).add(-2, 'days'),
+                    moment(selectedDate).add(-1, 'days'),
+                    moment(selectedDate).add(0, 'days')
+                ]
             default:
                 return '';
         }
     }
     const dataChangeDays = handleDayOfWeek(dayOfWeek, selectedData);
-    if (dataChangeDays.length > 0 && moment.isMoment(dataChangeDays[2])) {
-        const formattedDate = dataChangeDays[2].format('DD/MM/YYYY');
-        console.log(`Ngày/tháng/năm từ dataChangeDays: ${formattedDate}`);
-    } else {
-        console.log('Không thể lấy ngày từ dataChangeDays.');
-    }
+    // if (dataChangeDays.length > 0 && moment.isMoment(dataChangeDays[2])) {
+    //     const formattedDate = dataChangeDays[2].format('DD/MM/YYYY');
+    //     console.log(`Ngày/tháng/năm từ dataChangeDays: ${formattedDate}`);
+    // } else {
+    //     console.log('Không thể lấy ngày từ dataChangeDays.');
+    // }
     
     const dataCurrentDay = handleCurrentDay(currentDayOfWeek, currentDay);
 
@@ -387,7 +475,7 @@ const MySidebar = () => {
                         <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataCurrentDay[6].format('DD/MM/YYYY')}</p>
                     </Col>
                 </Row>
-            ) : (dataChangeDays !=null && dataCurrentDay !=null)(
+            ) : (dataChangeDays !=null && dataCurrentDay !=null) ? (
                 <Row span={24} style={{border: '1px solid #ddd', background: '#fff', backgroundColor:'#F3F7F9', minHeight:'60px', display:'flex', alignItems:'center'}}>
                     <Col span={3}>
                         <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Ca học</p>
@@ -421,7 +509,7 @@ const MySidebar = () => {
                         <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataChangeDays[6].format('DD/MM/YYYY')}</p>
                     </Col>
                 </Row>
-            )
+            ) : (<></>)
 
             }
             <Row style={{borderBottom: '1px solid #ccc'}}>
