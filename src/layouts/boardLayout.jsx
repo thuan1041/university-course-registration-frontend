@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, Input, Button, Avatar, Menu, Dropdown, Row, Col, message, Card, DatePicker, Radio, Space } from 'antd';
 import { HomeOutlined, BellOutlined, UserOutlined, DownOutlined } from '@ant-design/icons';
 import { Content } from "antd/es/layout/layout";
@@ -24,101 +24,11 @@ import {
     ArrowRightOutlined,
     ExpandOutlined
   } from '@ant-design/icons';
+import moment from 'moment';
 
 
 const { Sider } = Layout; 
 const { SubMenu } = Menu;
-
-const datafake1 = [
-    {
-        "_id": "664605e3af55520fe5297dcc",
-        "studentId": 20051041,
-        "studiedCourses": [],
-        "currentCourses": [
-            {
-                "_id": "664604bfe95feb70c573e80d",
-                "courseId": "66275e06c5bae68b2606b620",
-                "major": "66265ec3bd56e143ee8eb1c1",
-                "instructor": "Hoàng Hữu Nghĩa",
-                "maxStudents": 30,
-                "waitingStudents": [],
-                "registeredStudents": [
-                    20051041
-                ],
-                "classSchedule": {
-                    "weekDay": 4,
-                    "start": 1,
-                    "end": 3,
-                    "_id": "664604bfe95feb70c573e80f"
-                },
-                "practiceSchedule": [
-                    {
-                        "group": 1,
-                        "weekDay": 4,
-                        "start": 1,
-                        "end": 3
-                    },
-                    {
-                        "group": 2,
-                        "weekDay": 8,
-                        "start": 1,
-                        "end": 3
-                    }
-                ],
-                "room": "X12.07",
-                "semester": "HKII 2024-2025",
-                "status": true,
-                "createdAt": "2024-05-16T13:06:07.137Z",
-                "updatedAt": "2024-05-16T13:14:57.837Z",
-                "__v": 2
-            },
-            {
-                "_id": "664604bfe95feb70c573e80d",
-                "courseId": "66275e06c5bae68b2606b620",
-                "major": "66265ec3bd56e143ee8eb1c1",
-                "instructor": "Hoàng Hữu Thuận",
-                "maxStudents": 30,
-                "waitingStudents": [],
-                "registeredStudents": [
-                    20051041
-                ],
-                "classSchedule": {
-                    "weekDay": 4,
-                    "start": 1,
-                    "end": 3,
-                    "_id": "664604bfe95feb70c573e80f"
-                },
-                "practiceSchedule": [
-                    {
-                        "group": 1,
-                        "weekDay": 4,
-                        "start": 1,
-                        "end": 3
-                    },
-                    {
-                        "group": 2,
-                        "weekDay": 8,
-                        "start": 1,
-                        "end": 3
-                    }
-                ],
-                "room": "X12.07",
-                "semester": "HKII 2024-2025",
-                "status": true,
-                "createdAt": "2024-05-16T13:06:07.137Z",
-                "updatedAt": "2024-05-16T13:14:57.837Z",
-                "__v": 2
-            }
-        ],
-        "failedCourses": [],
-        "GPA": 0,
-        "status": true,
-        "__v": 1
-    }
-]
-
-const datafake2 = datafake1.map(item => item.currentCourses)
-console.log("datafake2", datafake2);
 
 const timeTableMorning = [
     [
@@ -306,7 +216,6 @@ const RenderTimeTableOnRow = ({data}) => {
 }
 
 const ItemTimeTable = ({subject}) => {
-    console.log("subject", subject);
     return (
         <Card style={{backgroundColor:"#E7ECF0", width:'100px', minHeight:'250px'}}>
             <p style={{fontWeight:'700', fontSize:11, width:70, marginLeft:-6}}>{subject.name}</p>
@@ -365,43 +274,156 @@ const MySidebar = () => {
     );
   };
 
-  const TimeTable = () => {
+  const TimeTable = ({dayOfWeek, selectedData, currentDayOfWeek, currentDay}) => {
+    const handleCurrentDay = (currentDayOfWeek, currentDay) => {
+        const selectedDate = moment(currentDayOfWeek, 'dd-mm-yyyy');
+        switch (currentDay) {
+            case 'Monday':
+                return [
+                    moment(selectedDate), 
+                    moment(selectedDate).add(1, 'days'), 
+                    moment(selectedDate).add(2, 'days'), 
+                    moment(selectedDate).add(3, 'days'),
+                    moment(selectedDate).add(4, 'days'),
+                    moment(selectedDate).add(5, 'days'),
+                    moment(selectedDate).add(6, 'days')
+                ]
+            case 'Tuesday':
+                return 'Thứ 3';
+            case 'Wednesday':
+                return 'Thứ 4';
+            case 'Thursday':
+                return 'Thứ 5';
+            case 'Friday':
+                return [
+                    moment(selectedDate).add(-4, 'days'),  
+                    moment(selectedDate).add(-3, 'days'), 
+                    moment(selectedDate).add(-2, 'days'), 
+                    moment(selectedDate).add(-1, 'days'),
+                    moment(selectedDate).add(0, 'days'),
+                    moment(selectedDate).add(1, 'days'),
+                    moment(selectedDate).add(2, 'days')
+                ]
+            case 'Saturday':
+                return 'Thứ 7';
+            case 'Sunday':
+                return 'Chủ nhật';
+            default:
+                return '';
+        }
+    }
+    const handleDayOfWeek = (dayOfWeek, dateString) => {
+        const selectedDate = moment(dateString, 'YYYY-MM-DD');
+        switch (dayOfWeek) {
+            case 0:
+                var arrDays = [
+                    moment(selectedDate), 
+                    moment(selectedDate).add(1, 'days'), 
+                    moment(selectedDate).add(2, 'days'), 
+                    moment(selectedDate).add(3, 'days'),
+                    moment(selectedDate).add(4, 'days'),
+                    moment(selectedDate).add(5, 'days'),
+                    moment(selectedDate).add(6, 'days'),]
+                return arrDays;
+            case 1:
+                return 'Thứ 2';
+            case 2:
+                return 'Thứ 3';
+            case 3:
+                return 'Thứ 4';
+            case 4:
+                return 'Thứ 5';
+            case 5:
+                return 'Thứ 6';
+            case 6:
+                return 'Thứ 7';
+            default:
+                return '';
+        }
+    }
+    const dataChangeDays = handleDayOfWeek(dayOfWeek, selectedData);
+    if (dataChangeDays.length > 0 && moment.isMoment(dataChangeDays[2])) {
+        const formattedDate = dataChangeDays[2].format('DD/MM/YYYY');
+        console.log(`Ngày/tháng/năm từ dataChangeDays: ${formattedDate}`);
+    } else {
+        console.log('Không thể lấy ngày từ dataChangeDays.');
+    }
+    
+    const dataCurrentDay = handleCurrentDay(currentDayOfWeek, currentDay);
 
     return (
         <Content>
-            <Row span={24} style={{border: '1px solid #ddd', background: '#fff', backgroundColor:'#F3F7F9', minHeight:'60px', display:'flex', alignItems:'center'}}>
-                <Col span={3}>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Ca học</p>
-                </Col>
-                <Col span={3}>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 2</p>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>22/04/2024</p>
-                </Col>
-                <Col span={3}>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 3</p>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>23/04/2024</p>
-                </Col>
-                <Col span={3}>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 4</p>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>24/04/2024</p>
-                </Col>
-                <Col span={3}>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 5</p>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>25/04/2024</p>
-                </Col>
-                <Col span={3}>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 6</p>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>26/04/2024</p>
-                </Col>
-                <Col span={3}>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 7</p>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>27/04/2024</p>
-                </Col>
-                <Col span={3}>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Chủ nhật</p>
-                    <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>28/04/2024</p>
-                </Col>
-            </Row>
+            {(dataCurrentDay != null && dataChangeDays=='') ? (
+                <Row span={24} style={{border: '1px solid #ddd', background: '#fff', backgroundColor:'#F3F7F9', minHeight:'60px', display:'flex', alignItems:'center'}}>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Ca học</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 2</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataCurrentDay[0].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 3</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataCurrentDay[1].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 4</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataCurrentDay[2].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 5</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataCurrentDay[3].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 6</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataCurrentDay[4].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 7</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataCurrentDay[5].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Chủ nhật</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataCurrentDay[6].format('DD/MM/YYYY')}</p>
+                    </Col>
+                </Row>
+            ) : (dataChangeDays !=null && dataCurrentDay !=null)(
+                <Row span={24} style={{border: '1px solid #ddd', background: '#fff', backgroundColor:'#F3F7F9', minHeight:'60px', display:'flex', alignItems:'center'}}>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Ca học</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 2</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataChangeDays[0].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 3</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataChangeDays[1].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 4</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataChangeDays[2].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 5</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataChangeDays[3].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 6</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataChangeDays[4].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Thứ 7</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataChangeDays[5].format('DD/MM/YYYY')}</p>
+                    </Col>
+                    <Col span={3}>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>Chủ nhật</p>
+                        <p style={{textAlign:'center', fontWeight:'700', color:'#1DA1F2'}}>{dataChangeDays[6].format('DD/MM/YYYY')}</p>
+                    </Col>
+                </Row>
+            )
+
+            }
             <Row style={{borderBottom: '1px solid #ccc'}}>
                 <Col span={3} style={{backgroundColor:'#FFFFCE'}}>
                     <p style={{textAlign:'center', fontWeight:'700', color:'gray'}}>Sáng</p>
@@ -427,29 +449,6 @@ const MySidebar = () => {
                     <p style={{textAlign:'center', fontWeight:'700', color:'gray'}}>Tối</p>
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
-                    {/* <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <Col span={3} style={{margin:6}}>
-                            <ItemTimeTable/>
-                        </Col>
-                        <Col span={3} style={{margin:6}}>
-                            <ItemTimeTable/>
-                        </Col>
-                        <Col span={3} style={{margin:6}}>
-                            <ItemTimeTable/>
-                        </Col>
-                        <Col span={3} style={{margin:6}}>
-                            <ItemTimeTable/>
-                        </Col>
-                        <Col span={3} style={{margin:6}}>
-                            <ItemTimeTable/>
-                        </Col>
-                        <Col span={3} style={{margin:6}}>
-                            <ItemTimeTable/>
-                        </Col>
-                        <Col span={3} style={{margin:6}}>
-                            <ItemTimeTable/>
-                        </Col>
-                    </Row> */}
                     <Row>
                     </Row>
                 </Col>
@@ -460,14 +459,25 @@ const MySidebar = () => {
 
     const { RangePicker } = DatePicker
 
-    const MyContent = () => {
+    const MyContent = ({handleDataPickerChange, dayOfWeek, selectedData}) => {
         const [radioValue, setRadioValue] = React.useState('all');
-    
+        const [isLoading, setIsLoading] = useState(true);
+        const currentDayOfWeek = moment().format('dd-mm-yyyy');
+        const currentDay = moment().format('dddd')
+
+        useEffect(() => {
+
+            console.log('currentDayOfWeek', currentDayOfWeek);
+            setIsLoading(false)
+        }, []);
+
         const onRadioChange = e => {
         setRadioValue(e.target.value);
         };
-  
-    return (
+        
+        if(isLoading) return (<p>Loading...</p>)
+        
+        return (
         <>
             <Row span={24} style={{background: '#fff'}}>
                 <div>
@@ -482,7 +492,9 @@ const MySidebar = () => {
                         </Radio.Group>
                     </Content>
                     <Content>
-                        <DatePicker style={{fontSize:'10px', height:30}}/>
+                        <DatePicker style={{fontSize:'10px', height:30}}
+                            onChange={handleDataPickerChange}
+                        />
                     </Content>
                     <Content>
                         <Button style={{ fontSize: '10px' }} icon={<CalendarOutlined />}>Hiện tại</Button>
@@ -495,7 +507,7 @@ const MySidebar = () => {
                 </Content>
             </Row>
             <Row>
-                <TimeTable/>
+                <TimeTable dayOfWeek={dayOfWeek} selectedData={selectedData} setIsLoading={setIsLoading} currentDayOfWeek={currentDayOfWeek} currentDay={currentDay}/>
             </Row>
         </>
     );
@@ -511,6 +523,17 @@ const BoardLayout = () => {
     const userDataString = localStorage.getItem('userData');
     const userData = JSON.parse(userDataString);
     const userInfo = userData?.payload;
+    const [selectedData, setSelectedData] = useState(null);
+    const [dayOfWeek, setDayOfWeek] = useState(null);
+
+    const handleDataPickerChange = (date, dateString) => {
+        const selectedDateMoment = moment(dateString, 'YYYY-MM-DD');
+        const dayOfWeek = selectedDateMoment.day();
+        console.log('dayOfWeek', dayOfWeek);
+        setSelectedData(dateString);
+        setDayOfWeek(dayOfWeek);
+        console.log('dateString', dateString);
+    }
 
     const handleLogout = () => {
         message.success('Đăng xuất thành công.');
@@ -624,7 +647,12 @@ const BoardLayout = () => {
                         <MySidebar/>
                     </Col>
                     <Col span={19} style={{ marginTop:10}}>
-                        <MyContent/>
+                        {/* {isLoading ? (
+                            <p>Loading...</p>
+                        ) :( */}
+                            <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData}/>
+                        {/* )
+                        } */}
                     </Col>
                 </Row>
             </Content>
