@@ -23,7 +23,6 @@ const ClassDetails = ({selectedClass, onClassDetailRowClick}) => {
       // setSelectedCourse(record);
       // setIsModalVisible(true);
     };
-
   
     const handleCloseModal = () => {
       // setIsModalVisible(false);

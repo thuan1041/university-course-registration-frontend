@@ -27,7 +27,9 @@ const DashBoardMenu = () => {
   return (
     <Row gutter={[10, 10]}>
       <Col xs={24} sm={12} md={8} lg={6} xl={3}>
-        <IconLinkCard icon={CalendarOutlined} title="Lịch theo tuần" />
+        <a href="/me/time-table">
+          <IconLinkCard icon={CalendarOutlined} title="Lịch theo tuần" />
+        </a>
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xl={3}>
         <IconLinkCard icon={BookOutlined} title="Kết quả học tập" />

@@ -7,6 +7,8 @@ import HomeSubLayout from './layouts/homeSubLayout';
 import FogotPassword from './components/login/fogotPassword';
 import FogotPage from './pages/auth/auth.fogotPasswordPage';
 import HomeCourseRegistration from './layouts/homeCourseRegistration';
+import TimeTable from './pages/schedule/timeTable';
+import BoardLayout from './layouts/boardLayout';
 
 const routes = [
     {
@@ -31,6 +33,14 @@ const routes = [
     {
         path:'/courseRegistration',
         element: <HomeCourseRegistration/>
+    },
+    {
+        path: '/time-table',
+        element: <TimeTable />,
+    },
+    {
+        path: '/me/time-table',
+        element: <BoardLayout />,
     }
 ];
 

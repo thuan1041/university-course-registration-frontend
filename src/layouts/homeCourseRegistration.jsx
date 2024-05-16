@@ -11,6 +11,7 @@ import StudentInfo from "../components/studentInfo/StudentInfo";
 import CoursePendingRegistered from "../components/courses/CoursePendingRegistered";
 import ClassDetails from "../components/courses/ClassDetails";
 import axios from '../../src/utils/axios';
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -47,6 +48,7 @@ const homeCourseRegistration = () => {
     const handleClassDetailRowClick = (record) => {
         setIsButtonDisabled(false);
         setSelectedClassDetail(record)
+        console.log("recorddetail",record);
     }
 
     useEffect(()=>{
@@ -69,10 +71,28 @@ const homeCourseRegistration = () => {
     
         }
     }
-    const handleRegisterCourse = () => {
-        console.log("selectedClass", selectedClass);
+    const handleRegisterCourse = async () => {
+        const payload = {
+            "classId": selectedClass?.classId, 
+            "studentId": parsedData?.payload?.studentId
+        }
+        console.log("payload",payload);
+        try {
+            const rs = await axios.post(`/course/registerClass`, payload)
+            console.log("rs",rs);
+            if(rs.errCode ===0){
+                toast.success("Đăng ký môn học thành công");
+                console.log("rs",rs.data);
+            } else if (rs.errCode === 4){
+                toast.warning("Sinh viên đã đăng ký vào lớp học phần này và đang chờ được xác nhận");
+                console.log("rscc");
+            } else {
+                toast.error("Đăng ký thất bại");
+            }
+        } catch (error) {
+            console.log("error", error);
+        }
     }
-
     return (
         <Layout style={{ minHeight: '100vh'}}>
             <Content style={{ padding: '0 220px', borderBlockColor:'blue'}}>
