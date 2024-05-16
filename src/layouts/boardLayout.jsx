@@ -30,6 +30,167 @@ import moment from 'moment';
 const { Sider } = Layout; 
 const { SubMenu } = Menu;
 
+const dataFetch = [{
+    "_id": "664605e3af55520fe5297dcc",
+    "studentId": 20051041,
+    "studiedCourses": [],
+    "currentCourses": [
+        {
+            "_id": "664604bfe95feb70c573e80d",
+            "courseId": "66275e06c5bae68b2606b620",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Nghĩa",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
+                "weekDay": 4,
+                "start": 1,
+                "end": 3,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 4,
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 1,
+                    "end": 3
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        },
+        {
+            "_id": "664604bfe95feb70c573e866",
+            "courseId": "66275e06c5bae68b2606b6320",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Thuận",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
+                "weekDay": 13,
+                "start": 15,
+                "end": 6,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 4,
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 1,
+                    "end": 3
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        },
+        {
+            "_id": "664604bfe95feb70c573e866",
+            "courseId": "66275e06c5bae68b2606b6320",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Thuận",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
+                "weekDay": 3,
+                "start": 7,
+                "end": 9,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 8,
+                    "start": 10,
+                    "end": 12
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 1,
+                    "end": 3
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        },
+        {
+            "_id": "664604bfe95feb70c573e866",
+            "courseId": "66275e06c5bae68b2606b6320",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Thuận",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
+                "weekDay": 3,
+                "start": 7,
+                "end": 9,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 4,
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 10,
+                    "end": 12
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        }
+    ],
+    "failedCourses": [],
+    "GPA": 0,
+    "status": true,
+    "__v": 1
+    }
+]
+
 const timeTableMorning = [
     [
         {
@@ -184,6 +345,69 @@ const timeTableAfternoon = [
         },
     ],
 ];
+
+const fetchDataTimeTable = () => {
+    const getDayCurrent = moment().format('YYYY-MM-DD');
+    const timeOutCourse = moment(getDayCurrent).add(30, 'days')
+    console.log("timeOutCourse", timeOutCourse.format('YYYY-MM-DD'));
+    const classSchedules = dataFetch[0].currentCourses.map(course => course.classSchedule);
+    console.log("classSchedules", classSchedules[0].start);
+    
+    const handleDataCluster = (classSchedules) => {
+        const dataClusterMorning = [];
+        const dataClusterAterNoon = [];
+        const dataClusterEvening = [];
+        for (let i = 0; i < classSchedules.length; i++) {
+            if(classSchedules[i].start >= 0 && classSchedules[i].start <= 6) {
+                const data = {
+                    weekDay: classSchedules[i].weekDay,
+                    start: classSchedules[i].start,
+                    end: classSchedules[i].end,
+                    _id: classSchedules[i]._id,
+                }
+                dataClusterMorning.push(data);
+            } else
+            if (classSchedules[i].start >= 7 && classSchedules[i].start <= 12) {
+                const data = {
+                    weekDay: classSchedules[i].weekDay,
+                    start: classSchedules[i].start,
+                    end: classSchedules[i].end,
+                    _id: classSchedules[i]._id,
+                }
+                dataClusterAterNoon.push(data);
+            } else 
+            if (classSchedules[i].start >= 13 && classSchedules[i].start <= 15) {
+                const data = {
+                    weekDay: classSchedules[i].weekDay,
+                    start: classSchedules[i].start,
+                    end: classSchedules[i].end,
+                    _id: classSchedules[i]._id,
+                }
+                dataClusterEvening.push(data);
+            }
+        }
+        return {
+            morning: dataClusterMorning,
+            afternoon: dataClusterAterNoon,
+            evening: dataClusterEvening
+        }
+    }
+    const dataAfterCluster = handleDataCluster(classSchedules);
+    console.log("dataAfterCluster_Morning", dataAfterCluster.morning);
+    console.log("dataAfterCluster_AfterNoon", dataAfterCluster.afternoon);
+    console.log("dataAfterCluster_Evening", dataAfterCluster.evening);
+
+    // {
+    //     "weekDay": 8,
+    //     "start": 10,
+    //     "end": 12,
+    //     "_id": "664604bfe95feb70c573e80f",
+    //     "instructor": "Võ Văn Thái",
+    //     "room": "X10.08",
+    //     "name":"Lập trình WWW"
+    // },
+    
+}
 
 
 const RenderTimeTableOnRow = ({data}) => {
@@ -430,13 +654,6 @@ const MySidebar = () => {
         }
     }
     const dataChangeDays = handleDayOfWeek(dayOfWeek, selectedData);
-    // if (dataChangeDays.length > 0 && moment.isMoment(dataChangeDays[2])) {
-    //     const formattedDate = dataChangeDays[2].format('DD/MM/YYYY');
-    //     console.log(`Ngày/tháng/năm từ dataChangeDays: ${formattedDate}`);
-    // } else {
-    //     console.log('Không thể lấy ngày từ dataChangeDays.');
-    // }
-    
     const dataCurrentDay = handleCurrentDay(currentDayOfWeek, currentDay);
 
     return (
@@ -613,6 +830,11 @@ const BoardLayout = () => {
     const userInfo = userData?.payload;
     const [selectedData, setSelectedData] = useState(null);
     const [dayOfWeek, setDayOfWeek] = useState(null);
+
+    useEffect(() => {
+        fetchDataTimeTable()
+    }, []);
+
 
     const handleDataPickerChange = (date, dateString) => {
         const selectedDateMoment = moment(dateString, 'YYYY-MM-DD');
