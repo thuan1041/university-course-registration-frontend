@@ -83,6 +83,43 @@ const dataFetch = [{
                 20051041
             ],
             "classSchedule": {
+                "weekDay": 4,
+                "start": 13,
+                "end": 15,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 4,
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 1,
+                    "end": 3
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        },
+        {
+            "_id": "664604bfe95feb70c573e80d",
+            "courseId": "66275e06c5bae68b2606b620",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Nghĩa",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
                 "weekDay": 2,
                 "start": 1,
                 "end": 3,
@@ -428,27 +465,47 @@ const fetchDataTimeTable = () => {
     console.log("classSchedules", classSchedules[0].start);
     
     const handleDataCluster = (classSchedules) => {
-        const dataClusterMorning = [];
-        const dataClusterAterNoon = [];
+        const dataClusterMorning_1_3 = [];
+        const dataClusterMorning_4_6 = [];
+        const dataClusterAterNoon_7_9 = [];
+        const dataClusterAterNoon_10_12 = [];
         const dataClusterEvening = [];
         for (let i = 0; i < classSchedules.length; i++) {
-            if(classSchedules[i].start >= 0 && classSchedules[i].start <= 6) {
+            if(classSchedules[i].start >= 0 && classSchedules[i].start <= 3) {
                 const data = {
                     weekDay: classSchedules[i].weekDay,
                     start: classSchedules[i].start,
                     end: classSchedules[i].end,
                     _id: classSchedules[i]._id,
                 }
-                dataClusterMorning.push(data);
+                dataClusterMorning_1_3.push(data);
             } else
-            if (classSchedules[i].start >= 7 && classSchedules[i].start <= 12) {
+            if(classSchedules[i].start >= 4 && classSchedules[i].start <= 6) {
                 const data = {
                     weekDay: classSchedules[i].weekDay,
                     start: classSchedules[i].start,
                     end: classSchedules[i].end,
                     _id: classSchedules[i]._id,
                 }
-                dataClusterAterNoon.push(data);
+                dataClusterMorning_4_6.push(data);
+            } else
+            if (classSchedules[i].start >= 7 && classSchedules[i].start <= 9) {
+                const data = {
+                    weekDay: classSchedules[i].weekDay,
+                    start: classSchedules[i].start,
+                    end: classSchedules[i].end,
+                    _id: classSchedules[i]._id,
+                }
+                dataClusterAterNoon_7_9.push(data);
+            } else 
+            if (classSchedules[i].start >= 10 && classSchedules[i].start <= 12) {
+                const data = {
+                    weekDay: classSchedules[i].weekDay,
+                    start: classSchedules[i].start,
+                    end: classSchedules[i].end,
+                    _id: classSchedules[i]._id,
+                }
+                dataClusterAterNoon_10_12.push(data);
             } else 
             if (classSchedules[i].start >= 13 && classSchedules[i].start <= 15) {
                 const data = {
@@ -461,15 +518,14 @@ const fetchDataTimeTable = () => {
             }
         }
         return {
-            morning: dataClusterMorning,
-            afternoon: dataClusterAterNoon,
+            morning_1_3: dataClusterMorning_1_3,
+            morning_4_6: dataClusterMorning_4_6,
+            afternoon_7_9: dataClusterAterNoon_7_9,
+            afternoon_10_12: dataClusterAterNoon_10_12,
             evening: dataClusterEvening
         }
     }
     const dataAfterCluster = handleDataCluster(classSchedules);
-    console.log("dataAfterCluster_Morning", dataAfterCluster.morning);
-    console.log("dataAfterCluster_AfterNoon", dataAfterCluster.afternoon);
-    console.log("dataAfterCluster_Evening", dataAfterCluster.evening);
 
     const handleDataTimeGrouping = (dataCluster) => {
         const dataTimeGrouping = ['null', 'null', 'null', 'null', 'null', 'null', 'null'];
@@ -484,10 +540,20 @@ const fetchDataTimeTable = () => {
         }
         return dataTimeGrouping;
     }
-    const dataAfterGrouping = handleDataTimeGrouping(dataAfterCluster.morning)
-    console.log("dataAfterGorupingMoring", dataAfterGrouping);
+    const dataAfterGrouping_MORNING_1_3 = handleDataTimeGrouping(dataAfterCluster.morning_1_3)
+    const dataAfterGrouping_MORNING_4_6 = handleDataTimeGrouping(dataAfterCluster.morning_4_6)
+    const dataAfterGrouping_AFFTERNOON_7_9 = handleDataTimeGrouping(dataAfterCluster.afternoon_7_9)
+    const dataAfterGrouping_AFFTERNOON_10_12 = handleDataTimeGrouping(dataAfterCluster.afternoon_10_12)
+    const dataAfterGrouping_EVENING = handleDataTimeGrouping(dataAfterCluster.evening)
+    
     return (
-        dataAfterGrouping
+        {
+            morning_1_3: dataAfterGrouping_MORNING_1_3,
+            morning_4_6: dataAfterGrouping_MORNING_4_6,
+            afternoon_7_9: dataAfterGrouping_AFFTERNOON_7_9,
+            afternoon_10_12: dataAfterGrouping_AFFTERNOON_10_12,
+            evening: dataAfterGrouping_EVENING
+        }
     )
 }
 
@@ -525,7 +591,7 @@ const ItemTimeTable = ({subject}) => {
     return (
         <Card style={{backgroundColor:"#E7ECF0", width:'100px', minHeight:'250px'}}>
             <p style={{fontWeight:'700', fontSize:11, width:70, marginLeft:-6}}>{subject.name}</p>
-            {/* <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`KTPM16A - LHP${subject?._id.slice(-8)}`.toUpperCase()}</p> */}
+            <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`KTPM16A - LHP${subject?._id.slice(-8)}`.toUpperCase()}</p>
             <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`Tiết: ${subject?.start} - ${subject?.end}`}</p>
             <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`Phòng: ${subject?.room}`}</p>
             <p style={{fontSize:10, width:70, marginLeft:-6, fontWeight:'500'}}>{`GV: ${subject?.instructor}`}</p>
@@ -738,7 +804,12 @@ const MySidebar = () => {
     const dataChangeDays = handleDayOfWeek(dayOfWeek, selectedData);
     const dataCurrentDay = handleCurrentDay(currentDayOfWeek, currentDay);
 
-    console.log("daaFretch", dataFetch[1]);
+    // console.log("daaFretch", dataFetch[1]);
+    const dataFetachMorning_1_3 = dataFetch.morning_1_3
+    const dataFetachMorning_4_6 = dataFetch.morning_4_6
+    const dataFetachAfternoon_7_9 = dataFetch.afternoon_7_9
+    const dataFetachAfternoon_10_12 = dataFetch.afternoon_10_12
+    const dataFetachEvening = dataFetch.evening
     return (
         <Content>
             {(dataCurrentDay != null && dataChangeDays=='') ? (
@@ -818,7 +889,10 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <RenderTimeTableOnRow data={[dataFetch]}/>
+                        <RenderTimeTableOnRow data={[dataFetachMorning_1_3]}/>
+                    </Row>
+                    <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                        <RenderTimeTableOnRow data={[dataFetachMorning_4_6]}/>
                     </Row>
                 </Col>
             </Row>
@@ -828,8 +902,10 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        {/* <RenderTimeTableOnRow data={timeTableAfternoon}/> */}
-                        <RenderTimeTableOnRow data={[dataFetch]}/>
+                        <RenderTimeTableOnRow data={[dataFetachAfternoon_7_9]}/>
+                    </Row>
+                    <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                        <RenderTimeTableOnRow data={[dataFetachAfternoon_10_12]}/>
                     </Row>
                 </Col>
             </Row>
@@ -838,7 +914,8 @@ const MySidebar = () => {
                     <p style={{textAlign:'center', fontWeight:'700', color:'gray'}}>Tối</p>
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
-                    <Row>
+                <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                        <RenderTimeTableOnRow data={[dataFetachEvening]}/>
                     </Row>
                 </Col>
             </Row>
@@ -918,6 +995,7 @@ const BoardLayout = () => {
 
     useEffect(() => {
         const dataFetch = fetchDataTimeTable()
+        console.log('dataFetch00000000000', dataFetch);
         setDataFetch(dataFetch)
     }, []);
 
