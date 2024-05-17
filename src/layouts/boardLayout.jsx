@@ -84,6 +84,80 @@ const dataFetch = [{
             ],
             "classSchedule": {
                 "weekDay": 4,
+                "start": 1,
+                "end": 3,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 4,
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 1,
+                    "end": 3
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        },
+        {
+            "_id": "664604bfe95feb70c573e80d",
+            "courseId": "66275e06c5bae68b2606b620",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Nghĩa",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
+                "weekDay": 4,
+                "start": 7,
+                "end": 9,
+                "_id": "664604bfe95feb70c573e80f"
+            },
+            "practiceSchedule": [
+                {
+                    "group": 1,
+                    "weekDay": 4,
+                    "start": 1,
+                    "end": 3
+                },
+                {
+                    "group": 2,
+                    "weekDay": 8,
+                    "start": 1,
+                    "end": 3
+                }
+            ],
+            "room": "X12.07",
+            "semester": "HKII 2024-2025",
+            "status": true,
+            "createdAt": "2024-05-16T13:06:07.137Z",
+            "updatedAt": "2024-05-16T13:14:57.837Z",
+            "__v": 2
+        },
+        {
+            "_id": "664604bfe95feb70c573e80d",
+            "courseId": "66275e06c5bae68b2606b620",
+            "major": "66265ec3bd56e143ee8eb1c1",
+            "instructor": "Hoàng Hữu Nghĩa",
+            "maxStudents": 30,
+            "waitingStudents": [],
+            "registeredStudents": [
+                20051041
+            ],
+            "classSchedule": {
+                "weekDay": 4,
                 "start": 13,
                 "end": 15,
                 "_id": "664604bfe95feb70c573e80f"
@@ -271,7 +345,9 @@ const dataFetch = [{
                 "weekDay": 3,
                 "start": 7,
                 "end": 9,
-                "_id": "664604bfe95feb70c573e80f"
+                "_id": "664604bfe95feb70c573e80f",
+                "name": "Lập trình Java",
+                "instructor":"Nguyễn Thị Thanh"
             },
             "practiceSchedule": [
                 {
