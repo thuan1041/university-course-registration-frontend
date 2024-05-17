@@ -646,7 +646,7 @@ const MySidebar = () => {
     );
   };
 
-  const TimeTable = ({dayOfWeek, selectedData, currentDayOfWeek, currentDay, dataFetch}) => {
+  const TimeTable = ({dayOfWeek, selectedData, currentDayOfWeek, currentDay, dataFetch, setCheckTimeOut}) => {
     const handleCurrentDay = (currentDayOfWeek, currentDay) => {
         const selectedDate = moment(currentDayOfWeek, 'dd-mm-yyyy');
         switch (currentDay) {
@@ -809,7 +809,41 @@ const MySidebar = () => {
     const dataFetachMorning_4_6 = dataFetch.morning_4_6
     const dataFetachAfternoon_7_9 = dataFetch.afternoon_7_9
     const dataFetachAfternoon_10_12 = dataFetch.afternoon_10_12
+    console.log("dataFetachMorning_1_32222222", dataFetachAfternoon_10_12);
     const dataFetachEvening = dataFetch.evening
+
+    const CHECK_NULL_ALL_DATA = (data) => {
+        if (!Array.isArray(data)) {
+            // If data is not an array, it cannot use the every method
+            return false;
+        }
+        return data.every(item => item == 'null');
+    }
+
+    console.log("checkNULL_ALL_DATA", CHECK_NULL_ALL_DATA(dataFetachAfternoon_10_12));
+    const checkDayInSemeter = (selectedData) => {
+        // Ngày hớt HKII 2024-2025  
+        const timeOutDayString = "2024-06-27";
+        const timeOutDay = moment(timeOutDayString, 'YYYY-MM-DD');
+        if(selectedData == null){
+            const getDayCurrent = moment().format('YYYY-MM-DD');
+            const selectDataTemp = moment(getDayCurrent, 'YYYY-MM-DD');
+            // const formattedSelectedData = selectDataTemp.format('YYYY-MM-DD');
+            const isSelectedDateBeforeTimeout = selectDataTemp.isBefore(timeOutDay);
+            return isSelectedDateBeforeTimeout;
+
+        } else {
+            const selectDataTemp = moment(selectedData, 'YYYY-MM-DD');
+            // const formattedSelectedData = selectDataTemp.format('YYYY-MM-DD');
+            const isSelectedDateBeforeTimeout = selectDataTemp.isBefore(timeOutDay);
+            return isSelectedDateBeforeTimeout;
+        }
+    }
+
+    useEffect(() => {
+        checkDayInSemeter(selectedData, currentDayOfWeek);
+    },[selectedData])
+
     return (
         <Content>
             {(dataCurrentDay != null && dataChangeDays=='') ? (
@@ -889,10 +923,34 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <RenderTimeTableOnRow data={[dataFetachMorning_1_3]}/>
+                        {(checkDayInSemeter(selectedData, currentDayOfWeek)==true) ? (
+                            <>
+                            {(!(CHECK_NULL_ALL_DATA(dataFetachMorning_1_3))) ? (
+                                <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                    <RenderTimeTableOnRow data={[dataFetachMorning_1_3]}/>
+                                </Row>
+                                ) : (
+                                    <></>
+                                )}
+                            </>
+                        ) : (<></>)
+
+                        }
                     </Row>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <RenderTimeTableOnRow data={[dataFetachMorning_4_6]}/>
+                        {(checkDayInSemeter(selectedData, currentDayOfWeek)==true) ? (
+                            <>
+                            {(!(CHECK_NULL_ALL_DATA(dataFetachMorning_4_6))) ? (
+                                <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                    <RenderTimeTableOnRow data={[dataFetachMorning_4_6]}/>  
+                                </Row>
+                                ) : (
+                                    <></>
+                                )}
+                            </>
+                        ) : (<></>)
+
+                        }
                     </Row>
                 </Col>
             </Row>
@@ -902,11 +960,33 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                     <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <RenderTimeTableOnRow data={[dataFetachAfternoon_7_9]}/>
+                        {(checkDayInSemeter(selectedData, currentDayOfWeek)==true) ? (
+                            <>
+                            {(!(CHECK_NULL_ALL_DATA(dataFetachAfternoon_7_9))) ? (
+                                <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                    <RenderTimeTableOnRow data={[dataFetachAfternoon_7_9]}/>   
+                                </Row>
+                                ) : (
+                                    <></>
+                                )}
+                            </>
+                        ) : (<></>)
+
+                        }
                     </Row>
-                    <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <RenderTimeTableOnRow data={[dataFetachAfternoon_10_12]}/>
-                    </Row>
+                    {checkDayInSemeter(selectedData, currentDayOfWeek) ? (
+                        <>
+                            {(CHECK_NULL_ALL_DATA(dataFetachAfternoon_10_12) == false) ? (
+                                <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                    <RenderTimeTableOnRow data={[dataFetachAfternoon_10_12]} />
+                                </Row>
+                            ) : (
+                                <></>
+                            )}
+                        </>
+                    ) : (
+                        <></>
+                    )}
                 </Col>
             </Row>
             <Row>
@@ -915,7 +995,18 @@ const MySidebar = () => {
                 </Col>
                 <Col span={21} style={{ backgroundImage: 'url("../../public/images/timetable_bg.png")', backgroundSize: 'cover', width:'100px', height:'100%', minHeight:'100px'}}>
                 <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <RenderTimeTableOnRow data={[dataFetachEvening]}/>
+                        {(checkDayInSemeter(selectedData, currentDayOfWeek)==true) ? (
+                            <>
+                            {(!(CHECK_NULL_ALL_DATA(dataFetachEvening))) ? (
+                                <Row style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                    <RenderTimeTableOnRow data={[dataFetachEvening]}/>
+                                </Row>
+                                ) : (
+                                    <></>
+                                )}
+                            </>
+                        ) : (<></>)
+                        }
                     </Row>
                 </Col>
             </Row>
@@ -931,8 +1022,9 @@ const MySidebar = () => {
         const currentDayOfWeek = moment().format('dd-mm-yyyy');
         const currentDay = moment().format('dddd')
 
-        useEffect(() => {
+        const [checkTimeOut, setCheckTimeOut] = useState(null);
 
+        useEffect(() => {
             console.log('currentDayOfWeek', currentDayOfWeek);
             setIsLoading(false)
         }, []);
@@ -973,7 +1065,7 @@ const MySidebar = () => {
                 </Content>
             </Row>
             <Row>
-                <TimeTable dayOfWeek={dayOfWeek} selectedData={selectedData} setIsLoading={setIsLoading} currentDayOfWeek={currentDayOfWeek} currentDay={currentDay} dataFetch={dataFetch}/>
+                <TimeTable dayOfWeek={dayOfWeek} selectedData={selectedData} setIsLoading={setIsLoading} currentDayOfWeek={currentDayOfWeek} currentDay={currentDay} dataFetch={dataFetch} setCheckTimeOut={setCheckTimeOut}/>
             </Row>
         </>
     );
@@ -1006,6 +1098,7 @@ const BoardLayout = () => {
         setSelectedData(dateString);
         setDayOfWeek(dayOfWeek);
         console.log('dateString', dateString);
+
     }
 
     const handleLogout = () => {
