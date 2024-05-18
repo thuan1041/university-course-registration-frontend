@@ -19,6 +19,7 @@ const ClassDetails = ({selectedClass, onClassDetailRowClick}) => {
 
     const [arrayData, setArrayData] = useState([]);
     const handleRowClick = (record) => {
+      console.log("record in classdetails",record._id);
       onClassDetailRowClick(record);
       // setSelectedCourse(record);
       // setIsModalVisible(true);

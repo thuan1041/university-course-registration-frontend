@@ -534,33 +534,12 @@ const timeTableAfternoon = [
 ];
 
 const fetchDataTimeTable = (dataAfter) => {
-
-    // console.log("classSchedules", classSchedules[0].start);
-    // console.log("classSchedulesIN d", dataFetchSchedule);
-    // const [dataFetchSchedule, setDataFetchSchedule] = useState([]);
-    // Fetch schedule and update state
-    
-    // const userDataString = localStorage.getItem('userData');
-    // const userData = JSON.parse(userDataString);
-    // const userInfo = userData?.payload;
-
-    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAA", JSON.stringify(dataAfter));
-
-    // const classSchedules = dataAfterSceduleFetch
-    // if(dataAfter == null){
-    //     return null
-    // }
     if(dataAfter != null){
         const getDayCurrent = moment().format('YYYY-MM-DD');
         const timeOutCourse = moment(getDayCurrent).add(30, 'days')
         console.log("timeOutCourse", timeOutCourse.format('YYYY-MM-DD'));
         // const classSchedules = dataFetch[0].currentCourses.map(course => course.classSchedule);
-        const userDataString = localStorage.getItem('userData');
-        const userData = JSON.parse(userDataString);
-        const userInfo = userData?.payload;
-    
         const classSchedules = dataAfter
-
 
         const handleDataCluster = (classSchedules) => {
             const dataClusterMorning_1_3 = [];

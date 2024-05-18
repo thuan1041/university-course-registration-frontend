@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import './homeSubLayout.scss';
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
-import { Button, Col, Drawer, Form, Row, Select, theme } from 'antd';
+import { Button, Col, Drawer, Form, Row, Select, message, theme } from 'antd';
 import {Layout} from 'antd'
 import logo from '../../public/images/dai-hoc-cong-nghiep-bacground.png'
 import Courses from "../components/courses/Courses";
@@ -12,6 +12,7 @@ import CoursePendingRegistered from "../components/courses/CoursePendingRegister
 import ClassDetails from "../components/courses/ClassDetails";
 import axios from '../../src/utils/axios';
 import { toast } from "react-toastify";
+import RegisteredCourse from "../components/courses/RegisteredCourse";
 
 const { Option } = Select;
 
@@ -24,6 +25,9 @@ const homeCourseRegistration = () => {
     const [showCoursePendingRegistered, setShowCoursePendingRegistered] = useState(false);
     const [showClassDetails, setShowClassDetails] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [getClasbyCourse,setClassByCourse] = useState()
+    const [getClassIdByProps, setGetClassIdByProps] = useState()
+    const [getRegisteredCourseByStudentId, setGetRegisteredCourseByStudentId] = useState()
 
     // Lấy dữ liệu từ localStorage với key 'selectedCourseData'
     const savedData = localStorage.getItem('userData');
@@ -31,6 +35,21 @@ const homeCourseRegistration = () => {
     const parsedData = JSON.parse(savedData);
     // Sử dụng dữ liệu đã lấy từ localStorage
     console.log("user",parsedData.payload.major._id);
+
+
+    const fetchGetRegisteredCourseByStudentId = async () => {
+        const payload = {
+            "studentId": parsedData?.payload?.studentId
+        }
+        const rs = await axios.post(`/course/getRegisteredCourse`, payload)
+        console.log("rsppppppppppp",rs);
+        if(rs.errCode ===0){
+            setGetRegisteredCourseByStudentId(rs.data)
+            console.log(rs.data);
+        } else {
+        
+        }
+    }
 
     // Hàm callback để xử lý khi chọn một dòng từ Courses
     const handleCourseRowClick = (record) => {
@@ -45,11 +64,18 @@ const homeCourseRegistration = () => {
         setSelectedClass(record);
         setShowClassDetails(true);
     };
+
     const handleClassDetailRowClick = (record) => {
+        // fetchClassByCourse(record?._id)
+        setGetClassIdByProps(record?._id)
         setIsButtonDisabled(false);
         setSelectedClassDetail(record)
         console.log("recorddetail",record);
     }
+
+    useEffect(() => {
+        fetchGetRegisteredCourseByStudentId()
+    }, []);
 
     useEffect(()=>{
         fetchGetCourseByMajor()
@@ -57,7 +83,6 @@ const homeCourseRegistration = () => {
 
 
     const [getCourseByMajor,setGetCourseByMajor] = useState()
-
 
     async function fetchGetCourseByMajor (){
         const payload = {
@@ -71,23 +96,26 @@ const homeCourseRegistration = () => {
     
         }
     }
+
+
     const handleRegisterCourse = async () => {
         const payload = {
-            "classId": selectedClass?.classId, 
+            "_id": getClassIdByProps, 
             "studentId": parsedData?.payload?.studentId
         }
+        
         console.log("payload",payload);
         try {
             const rs = await axios.post(`/course/registerClass`, payload)
-            console.log("rs",rs);
+            console.log("222222",rs);
             if(rs.errCode ===0){
-                toast.success("Đăng ký môn học thành công");
-                console.log("rs",rs.data);
+                message.success("Đăng ký môn học thành công");
             } else if (rs.errCode === 4){
-                toast.warning("Sinh viên đã đăng ký vào lớp học phần này và đang chờ được xác nhận");
-                console.log("rscc");
+                message.warning("Sinh viên đã đăng ký vào lớp học phần này và đang chờ được xác nhận");
+            } else if (rs.errCode === 3){
+                message.warning("Sinh viên đã có trong danh sách lớp học phần này rồi");
             } else {
-                toast.error("Đăng ký thất bại");
+                message.error("Đăng ký thất bại");
             }
         } catch (error) {
             console.log("error", error);
@@ -126,6 +154,7 @@ const homeCourseRegistration = () => {
                                 <ClassDetails selectedClass={selectedClass} onClassDetailRowClick={handleClassDetailRowClick} classId={selectedClass?._id} courseId={selectedCourse?._id}/>
                             </>
                         }
+                            
                     </Content>
 
                     <Form.Item  style={{display:'flex', alignItems:"center", justifyContent:'center', paddingTop: 30, marginBottom: 20}}>
@@ -135,7 +164,13 @@ const homeCourseRegistration = () => {
                             onClick={handleRegisterCourse}
                         >Đăng ký môn học</Button>
                     </Form.Item>
-                    
+                    {(getRegisteredCourseByStudentId) ? (
+                        <>
+                            <h3 className="title2" style={{ textAlign: 'center', paddingTop: 30, marginBottom: 20 }}>LỚP HỌC PHẦN ĐÃ ĐĂNG KÝ TRONG HỌC KỲ NÀY</h3>
+                            <RegisteredCourse getRegisteredCourseByStudentId={getRegisteredCourseByStudentId}/>
+                        </>
+                    ): (<></>)
+                    }
                 </Content>
             </Content>
             <Footer style={{ textAlign: 'center' }}>Ant Design ©2024 Created by You</Footer>
