@@ -9,6 +9,8 @@ import FogotPage from './pages/auth/auth.fogotPasswordPage';
 import HomeCourseRegistration from './layouts/homeCourseRegistration';
 import TimeTable from './pages/schedule/timeTable';
 import BoardLayout from './layouts/boardLayout';
+import HomeInstructorLayout from './layouts/homeInstructorLayout';
+import Mark from './pages/instructor/instructor.mark';
 
 const routes = [
     {
@@ -41,6 +43,14 @@ const routes = [
     {
         path: '/me/time-table',
         element: <BoardLayout />,
+    },
+    {
+        path: '/instuctor/dashboard',
+        element: <HomeInstructorLayout />,
+    },
+    {
+        path: '/instuctor/mark',
+        element: <Mark/>,
     }
 ];
 

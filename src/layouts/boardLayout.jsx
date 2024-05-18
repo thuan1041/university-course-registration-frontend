@@ -1362,7 +1362,6 @@ const BoardLayout = () => {
                         {
                             (dataFetch != null) ? (
                                 <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData} dataFetch={dataFetch}/>
-
                             ) : (<></>)
                         }
                     </Col>
