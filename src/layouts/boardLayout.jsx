@@ -6,7 +6,7 @@ import StudentDetail from "../components/studentInfo/StuddentDetail";
 import DashBoardMenu from "../components/dasdboard/DashbooardMenu";
 import DashboardLearningProgress from "../components/dasdboard/DashboardLearningProgress";
 import DashboardNotification from "../components/dasdboard/DashboardNotification";
-import { useNavigate } from "react-router-dom";
+import { useFetcher, useNavigate } from "react-router-dom";
 import ChangePasswordModal from "../../src/modals/app/changePasswordModal";
 import axios from "../../src/utils/axios";
 import { useSelector } from "react-redux";
@@ -533,106 +533,155 @@ const timeTableAfternoon = [
     ],
 ];
 
-const fetchDataTimeTable = () => {
-    const getDayCurrent = moment().format('YYYY-MM-DD');
-    const timeOutCourse = moment(getDayCurrent).add(30, 'days')
-    console.log("timeOutCourse", timeOutCourse.format('YYYY-MM-DD'));
-    const classSchedules = dataFetch[0].currentCourses.map(course => course.classSchedule);
-    // const classSchedules = dataFetchSchedule
+const fetchDataTimeTable = (dataAfter) => {
+
     // console.log("classSchedules", classSchedules[0].start);
-    console.log("classSchedulesIN d", classSchedules);
-
-    const handleDataCluster = (classSchedules) => {
-        const dataClusterMorning_1_3 = [];
-        const dataClusterMorning_4_6 = [];
-        const dataClusterAterNoon_7_9 = [];
-        const dataClusterAterNoon_10_12 = [];
-        const dataClusterEvening = [];
-        for (let i = 0; i < classSchedules.length; i++) {
-            if(classSchedules[i].start >= 0 && classSchedules[i].start <= 3) {
-                const data = {
-                    weekDay: classSchedules[i].weekDay,
-                    start: classSchedules[i].start,
-                    end: classSchedules[i].end,
-                    _id: classSchedules[i]._id,
-                }
-                dataClusterMorning_1_3.push(data);
-            } else
-            if(classSchedules[i].start >= 4 && classSchedules[i].start <= 6) {
-                const data = {
-                    weekDay: classSchedules[i].weekDay,
-                    start: classSchedules[i].start,
-                    end: classSchedules[i].end,
-                    _id: classSchedules[i]._id,
-                }
-                dataClusterMorning_4_6.push(data);
-            } else
-            if (classSchedules[i].start >= 7 && classSchedules[i].start <= 9) {
-                const data = {
-                    weekDay: classSchedules[i].weekDay,
-                    start: classSchedules[i].start,
-                    end: classSchedules[i].end,
-                    _id: classSchedules[i]._id,
-                }
-                dataClusterAterNoon_7_9.push(data);
-            } else 
-            if (classSchedules[i].start >= 10 && classSchedules[i].start <= 12) {
-                const data = {
-                    weekDay: classSchedules[i].weekDay,
-                    start: classSchedules[i].start,
-                    end: classSchedules[i].end,
-                    _id: classSchedules[i]._id,
-                }
-                dataClusterAterNoon_10_12.push(data);
-            } else 
-            if (classSchedules[i].start >= 13 && classSchedules[i].start <= 15) {
-                const data = {
-                    weekDay: classSchedules[i].weekDay,
-                    start: classSchedules[i].start,
-                    end: classSchedules[i].end,
-                    _id: classSchedules[i]._id,
-                }
-                dataClusterEvening.push(data);
-            }
-        }
-        return {
-            morning_1_3: dataClusterMorning_1_3,
-            morning_4_6: dataClusterMorning_4_6,
-            afternoon_7_9: dataClusterAterNoon_7_9,
-            afternoon_10_12: dataClusterAterNoon_10_12,
-            evening: dataClusterEvening
-        }
-    }
-    const dataAfterCluster = handleDataCluster(classSchedules);
-
-    const handleDataTimeGrouping = (dataCluster) => {
-        const dataTimeGrouping = ['null', 'null', 'null', 'null', 'null', 'null', 'null'];
-        for (let i = 0; i < dataCluster.length; i++) {
-            const item = dataCluster[i];
-            if (item.weekDay != null) {
-                const position = item.weekDay - 2;
-                if (position >= 0 && position < 7) {
-                    dataTimeGrouping[position] = item;
-                }
-            }
-        }
-        return dataTimeGrouping;
-    }
-    const dataAfterGrouping_MORNING_1_3 = handleDataTimeGrouping(dataAfterCluster.morning_1_3)
-    const dataAfterGrouping_MORNING_4_6 = handleDataTimeGrouping(dataAfterCluster.morning_4_6)
-    const dataAfterGrouping_AFFTERNOON_7_9 = handleDataTimeGrouping(dataAfterCluster.afternoon_7_9)
-    const dataAfterGrouping_AFFTERNOON_10_12 = handleDataTimeGrouping(dataAfterCluster.afternoon_10_12)
-    const dataAfterGrouping_EVENING = handleDataTimeGrouping(dataAfterCluster.evening)
+    // console.log("classSchedulesIN d", dataFetchSchedule);
+    // const [dataFetchSchedule, setDataFetchSchedule] = useState([]);
+    // Fetch schedule and update state
     
-    return (
-        {
-            morning_1_3: dataAfterGrouping_MORNING_1_3,
-            morning_4_6: dataAfterGrouping_MORNING_4_6,
-            afternoon_7_9: dataAfterGrouping_AFFTERNOON_7_9,
-            afternoon_10_12: dataAfterGrouping_AFFTERNOON_10_12,
-            evening: dataAfterGrouping_EVENING
+    // const userDataString = localStorage.getItem('userData');
+    // const userData = JSON.parse(userDataString);
+    // const userInfo = userData?.payload;
+
+    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAA", JSON.stringify(dataAfter));
+
+    // const classSchedules = dataAfterSceduleFetch
+    // if(dataAfter == null){
+    //     return null
+    // }
+    if(dataAfter != null){
+        const getDayCurrent = moment().format('YYYY-MM-DD');
+        const timeOutCourse = moment(getDayCurrent).add(30, 'days')
+        console.log("timeOutCourse", timeOutCourse.format('YYYY-MM-DD'));
+        // const classSchedules = dataFetch[0].currentCourses.map(course => course.classSchedule);
+        const userDataString = localStorage.getItem('userData');
+        const userData = JSON.parse(userDataString);
+        const userInfo = userData?.payload;
+    
+        const classSchedules = dataAfter
+
+
+        const handleDataCluster = (classSchedules) => {
+            const dataClusterMorning_1_3 = [];
+            const dataClusterMorning_4_6 = [];
+            const dataClusterAterNoon_7_9 = [];
+            const dataClusterAterNoon_10_12 = [];
+            const dataClusterEvening = [];
+            for (let i = 0; i < classSchedules.length; i++) {
+                if(classSchedules[i].start >= 0 && classSchedules[i].start <= 3) {
+                    const data = {
+                        weekDay: classSchedules[i].weekDay,
+                        start: classSchedules[i].start,
+                        end: classSchedules[i].end,
+                        _id: classSchedules[i]._id,
+                        instructor: classSchedules[i].instructor,
+                        room: classSchedules[i].room,
+                        name: classSchedules[i].name,
+                        semester: classSchedules[i].semester,
+                        type: classSchedules[i].type
+                    }
+                    dataClusterMorning_1_3.push(data);
+                } else
+                if(classSchedules[i].start >= 4 && classSchedules[i].start <= 6) {
+                    const data = {
+                        weekDay: classSchedules[i].weekDay,
+                        start: classSchedules[i].start,
+                        end: classSchedules[i].end,
+                        _id: classSchedules[i]._id,
+                        instructor: classSchedules[i].instructor,
+                        room: classSchedules[i].room,
+                        name: classSchedules[i].name,
+                        semester: classSchedules[i].semester,
+                        type: classSchedules[i].type
+                    }
+                    dataClusterMorning_4_6.push(data);
+                } else
+                if (classSchedules[i].start >= 7 && classSchedules[i].start <= 9) {
+                    const data = {
+                        weekDay: classSchedules[i].weekDay,
+                        start: classSchedules[i].start,
+                        end: classSchedules[i].end,
+                        _id: classSchedules[i]._id,
+                        instructor: classSchedules[i].instructor,
+                        room: classSchedules[i].room,
+                        name: classSchedules[i].name,
+                        semester: classSchedules[i].semester,
+                        type: classSchedules[i].type
+                    }
+                    dataClusterAterNoon_7_9.push(data);
+                } else 
+                if (classSchedules[i].start >= 10 && classSchedules[i].start <= 12) {
+                    const data = {
+                        weekDay: classSchedules[i].weekDay,
+                        start: classSchedules[i].start,
+                        end: classSchedules[i].end,
+                        _id: classSchedules[i]._id,
+                        instructor: classSchedules[i].instructor,
+                        room: classSchedules[i].room,
+                        name: classSchedules[i].name,
+                        semester: classSchedules[i].semester,
+                        type: classSchedules[i].type
+                    }
+                    dataClusterAterNoon_10_12.push(data);
+                } else 
+                if (classSchedules[i].start >= 13 && classSchedules[i].start <= 15) {
+                    const data = {
+                        weekDay: classSchedules[i].weekDay,
+                        start: classSchedules[i].start,
+                        end: classSchedules[i].end,
+                        _id: classSchedules[i]._id,
+                        instructor: classSchedules[i].instructor,
+                        room: classSchedules[i].room,
+                        name: classSchedules[i].name,
+                        semester: classSchedules[i].semester,
+                        type: classSchedules[i].type
+                    }
+                    dataClusterEvening.push(data);
+                }
+            }
+            return {
+                morning_1_3: dataClusterMorning_1_3,
+                morning_4_6: dataClusterMorning_4_6,
+                afternoon_7_9: dataClusterAterNoon_7_9,
+                afternoon_10_12: dataClusterAterNoon_10_12,
+                evening: dataClusterEvening
+            }
         }
-    )
+        const dataAfterCluster = handleDataCluster(classSchedules);
+    
+        const handleDataTimeGrouping = (dataCluster) => {
+            const dataTimeGrouping = ['null', 'null', 'null', 'null', 'null', 'null', 'null'];
+            for (let i = 0; i < dataCluster.length; i++) {
+                const item = dataCluster[i];
+                if (item.weekDay != null) {
+                    const position = item.weekDay - 2;
+                    if (position >= 0 && position < 7) {
+                        dataTimeGrouping[position] = item;
+                    }
+                }
+            }
+            return dataTimeGrouping;
+        }
+        const dataAfterGrouping_MORNING_1_3 = handleDataTimeGrouping(dataAfterCluster.morning_1_3)
+        const dataAfterGrouping_MORNING_4_6 = handleDataTimeGrouping(dataAfterCluster.morning_4_6)
+        const dataAfterGrouping_AFFTERNOON_7_9 = handleDataTimeGrouping(dataAfterCluster.afternoon_7_9)
+        const dataAfterGrouping_AFFTERNOON_10_12 = handleDataTimeGrouping(dataAfterCluster.afternoon_10_12)
+        const dataAfterGrouping_EVENING = handleDataTimeGrouping(dataAfterCluster.evening)
+        
+        return (
+            {
+                morning_1_3: dataAfterGrouping_MORNING_1_3,
+                morning_4_6: dataAfterGrouping_MORNING_4_6,
+                afternoon_7_9: dataAfterGrouping_AFFTERNOON_7_9,
+                afternoon_10_12: dataAfterGrouping_AFFTERNOON_10_12,
+                evening: dataAfterGrouping_EVENING
+            }
+        )
+    } else {
+        console.log("nulllllllllllll");
+    }
+
 }
 
 
@@ -1163,34 +1212,44 @@ const BoardLayout = () => {
     const [dayOfWeek, setDayOfWeek] = useState(null);
     const [dataFetch,setDataFetch]  = useState(null);
     const [dataFetchSchedule, setDataFetchSchedule] = useState(null);
+    const [dataAfter, setDataAfter] = useState(null);
 
     const handleFetchSchedule = async () => {
+        console.log('fetch schedule');
         const payload = {
             studentId: userInfo?.studentId
-        }
+        };
         console.log('studentId', payload);
         try {
             const rs = await axios.post(`/course/getSchedules`, payload);
             console.log('rs============', rs);
-            if(rs.errCode === 0){
+            if (rs.errCode === 0) {
+                console.log("connnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
                 setDataFetchSchedule(rs.data);
+                // return rs.data;
             }
         } catch (error) {
             console.log("error in handleFetch", error);
         }
-    }
+    };
+
+    // useEffect(() => {
+    //     handleFetchSchedule()
+    //     const dataFetch = fetchDataTimeTable(dataFetchSchedule)
+    //     setDataFetch(dataFetch);
+    // }, []);
+
     
     useEffect(() => {
-        // const dataFetch = fetchDataTimeTable()
-        // setDataFetch(dataFetch)
-        // handleFetchSchedule();
-        // console.log('fetchSchedule', fetchSchedule);
-        // if(dataFetchSchedule != null){
-            // const dataFetch = <fetchDataTimeTable dataFetchSchedule={dataFetchSchedule} />
-            const dataFetch = fetchDataTimeTable()
-            setDataFetch(dataFetch)
+        handleFetchSchedule();
+    }, []); // Dependency array empty to run only once when component mounts
+
+    useEffect(() => {
+        // if (dataFetchSchedule) {
+            const dataFetch = fetchDataTimeTable(dataFetchSchedule);
+            setDataFetch(dataFetch);
         // }
-    }, []);
+    }, [dataFetchSchedule]); // Run this effect when dataFetchSchedule changes
 
 
     const handleDataPickerChange = (date, dateString) => {
@@ -1318,9 +1377,15 @@ const BoardLayout = () => {
                         {/* {isLoading ? (
                             <p>Loading...</p>
                         ) :( */}
-                            <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData} dataFetch={dataFetch}/>
+                            {/* <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData} dataFetch={dataFetch}/> */}
                         {/* )
                         } */}
+                        {
+                            (dataFetch != null) ? (
+                                <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData} dataFetch={dataFetch}/>
+
+                            ) : (<></>)
+                        }
                     </Col>
                 </Row>
             </Content>
