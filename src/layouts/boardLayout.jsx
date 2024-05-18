@@ -538,8 +538,10 @@ const fetchDataTimeTable = () => {
     const timeOutCourse = moment(getDayCurrent).add(30, 'days')
     console.log("timeOutCourse", timeOutCourse.format('YYYY-MM-DD'));
     const classSchedules = dataFetch[0].currentCourses.map(course => course.classSchedule);
-    console.log("classSchedules", classSchedules[0].start);
-    
+    // const classSchedules = dataFetchSchedule
+    // console.log("classSchedules", classSchedules[0].start);
+    console.log("classSchedulesIN d", classSchedules);
+
     const handleDataCluster = (classSchedules) => {
         const dataClusterMorning_1_3 = [];
         const dataClusterMorning_4_6 = [];
@@ -1160,12 +1162,36 @@ const BoardLayout = () => {
     const [selectedData, setSelectedData] = useState(null);
     const [dayOfWeek, setDayOfWeek] = useState(null);
     const [dataFetch,setDataFetch]  = useState(null);
+    const [dataFetchSchedule, setDataFetchSchedule] = useState(null);
 
+    const handleFetchSchedule = async () => {
+        const payload = {
+            studentId: userInfo?.studentId
+        }
+        console.log('studentId', payload);
+        try {
+            const rs = await axios.post(`/course/getSchedules`, payload);
+            console.log('rs============', rs);
+            if(rs.errCode === 0){
+                setDataFetchSchedule(rs.data);
+            }
+        } catch (error) {
+            console.log("error in handleFetch", error);
+        }
+    }
+    
     useEffect(() => {
-        const dataFetch = fetchDataTimeTable()
-        console.log('dataFetch00000000000', dataFetch);
-        setDataFetch(dataFetch)
+        // const dataFetch = fetchDataTimeTable()
+        // setDataFetch(dataFetch)
+        // handleFetchSchedule();
+        // console.log('fetchSchedule', fetchSchedule);
+        // if(dataFetchSchedule != null){
+            // const dataFetch = <fetchDataTimeTable dataFetchSchedule={dataFetchSchedule} />
+            const dataFetch = fetchDataTimeTable()
+            setDataFetch(dataFetch)
+        // }
     }, []);
+
 
     const handleDataPickerChange = (date, dateString) => {
         const selectedDateMoment = moment(dateString, 'YYYY-MM-DD');
@@ -1302,5 +1328,6 @@ const BoardLayout = () => {
         </Layout>
     )
 }
+
 
 export default BoardLayout;
