@@ -52,6 +52,7 @@ const ClassDetails = ({selectedClass, onClassDetailRowClick}) => {
         {
           title: 'STT',
           dataIndex: 'stt',
+          render: (_, __, index) => index + 1,
         },
 
         {
@@ -69,11 +70,13 @@ const ClassDetails = ({selectedClass, onClassDetailRowClick}) => {
         },
         {
           title: 'Dãy nhà',
-          dataIndex: 1,
+          dataIndex: 'building',
+          render: (render) => "A"
         },
         {
           title: 'Cơ sở',
           dataIndex: 1,
+          render: () => "Cơ sở 1"
         },
         {
           title: 'Giảng viên',
@@ -81,7 +84,8 @@ const ClassDetails = ({selectedClass, onClassDetailRowClick}) => {
         },
         {
           title: 'Thời gian học',
-          dataIndex: 4,
+          dataIndex: 'time',
+          render: (time) => "20/09/2024 - 20/12/2024"
         }
     ];
     const onFinish = (values) => {

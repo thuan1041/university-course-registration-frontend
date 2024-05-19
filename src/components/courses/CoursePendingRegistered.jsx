@@ -91,7 +91,10 @@ const CoursePendingRegistered = ({ selectedCourse, onClassRowClick, courseId }) 
     return (
         <div>
             {loading ? (
-                <Spin />
+                // <Spin />
+                <div style={{ display: 'flex', justifyContent: 'center', height: '100vh' }}>
+                    <Spin size="large" />
+                </div>
             ) : (
                 <Table
                 columns={columns}

@@ -25,6 +25,7 @@ import {
     ExpandOutlined
   } from '@ant-design/icons';
 import moment from 'moment';
+import LeftSidebarAdmin from "../pages/sidebar/LeftSideBarAdmin";
 
 
 const { Sider } = Layout; 
@@ -713,44 +714,6 @@ const ItemNULL = ({data}) => {
     )
 }
 
-const MySidebar = () => {
-    return (
-        <Layout style={{ minHeight: '100vh' }}>
-        <Sider style={{ background: '#fff', borderRight: '1px solid #ddd' }}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            style={{ height: '100%', borderRight: 0 }}
-          >
-            <Menu.Item key="1" icon={<HomeOutlined />} style={{ borderBottom: '1px solid #ddd' }}>
-              Trang chủ
-            </Menu.Item>
-            <SubMenu key="sub1" icon={<InfoCircleOutlined />} title="Thông tin chung" style={{ borderBottom: '1px solid #ddd' }}>
-              <Menu.Item key="2" style={{ borderBottom: '1px solid #ddd' }}>Thông tin sinh viên</Menu.Item>
-              <Menu.Item key="3" style={{ borderBottom: '1px solid #ddd' }}>Ghi chú nhắc nhở</Menu.Item>
-              <Menu.Item key="4" style={{ borderBottom: '1px solid #ddd' }}>Đề xuất cập nhật thông tin</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub2" icon={<BookOutlined />} title="Học tập" style={{ borderBottom: '1px solid #ddd' }}>
-              <Menu.Item key="5" style={{ borderBottom: '1px solid #ddd' }}>Kết quả học tập</Menu.Item>
-              <Menu.Item key="6" style={{ borderBottom: '1px solid #ddd' }}>Lịch học tập lớp học danh nghĩa</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub3" icon={<FormOutlined />} title="Đăng ký học phần" style={{ borderBottom: '1px solid #ddd' }}>
-              <Menu.Item key="7" style={{ borderBottom: '1px solid #ddd' }}>Chương trình khung</Menu.Item>
-              <Menu.Item key="8" style={{ borderBottom: '1px solid #ddd' }}>Đăng ký học phần</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub4" icon={<DollarCircleOutlined />} title="Học phí" style={{ borderBottom: '1px solid #ddd' }}>
-              <Menu.Item key="9" style={{ borderBottom: '1px solid #ddd' }}>Tra cứu công nợ</Menu.Item>
-              <Menu.Item key="10" style={{ borderBottom: '1px solid #ddd' }}>Thanh toán trực tuyến</Menu.Item>
-              <Menu.Item key="11" style={{ borderBottom: '1px solid #ddd' }}>Phiếu thu tổng hợp</Menu.Item>
-            </SubMenu>
-            <Card style={{minHeight:'40%', marginTop:6, border: '1px solid #ccc'}}>
-                <img src="https://ascvn.com.vn/content/images/appsinhvienqr.png" alt="QR Code" style={{ width: '100%', height:"100%" }} />
-            </Card>
-          </Menu>
-        </Sider>
-      </Layout>
-    );
-  };
 
   const TimeTable = ({dayOfWeek, selectedData, currentDayOfWeek, currentDay, dataFetch, setCheckTimeOut}) => {
     const handleCurrentDay = (currentDayOfWeek, currentDay) => {
@@ -1140,14 +1103,14 @@ const MySidebar = () => {
         };
         
         // if(isLoading) return (<p>Loading...</p>)
-
         if (isLoading) {
             return (
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <Spin size="large" />
               </div>
-            );  
-        }        
+            );
+        }
+        
         return (
         <>
             <Row span={24} style={{background: '#fff'}}>
@@ -1155,36 +1118,15 @@ const MySidebar = () => {
                     <h3  style={{padding:10, fontWeight:'600'}}>Lịch học, lịch thi theo tuần</h3>
                 </div>
                 <Content direction="vertical" style={{marginTop:10, display:'flex', flexDirection:'row', justifyContent:'space-between', paddingLeft:10}}>
-                    <Content>
-                        <Radio.Group  onChange={onRadioChange} value={radioValue} style={{ marginBottom: '16px', display:'flex', flexDirection:'row'}}>
-                        <Radio.Button value="all" style={{ fontSize: '10px' }}>Tất cả</Radio.Button>
-                        <Radio.Button value="schedule" style={{ fontSize: '10px' }}>Lịch học</Radio.Button>
-                        <Radio.Button value="exam" style={{ fontSize: '10px' }}>Lịch thi</Radio.Button>
-                        </Radio.Group>
-                    </Content>
-                    <Content>
-                        <DatePicker style={{fontSize:'10px', height:30}}
-                            onChange={handleDataPickerChange}
-                        />
-                    </Content>
-                    <Content>
-                        <Button style={{ fontSize: '10px' }} icon={<CalendarOutlined />}>Hiện tại</Button>
-                        <Button style={{ fontSize: '10px' }} icon={<PrinterOutlined />}>In lịch</Button>
-                        <Button style={{ fontSize: '10px' }} icon={<ArrowLeftOutlined />}>Trở về</Button>
-                        <Button style={{ fontSize: '10px' }} icon={<ArrowRightOutlined />}>Tiếp theo</Button>
-                        <Button style={{ fontSize: '10px' }} icon={<ExpandOutlined />}>Mở rộng</Button>
-                    </Content>
-                    <Content/>
                 </Content>
             </Row>
             <Row>
-                <TimeTable dayOfWeek={dayOfWeek} selectedData={selectedData} setIsLoading={setIsLoading} currentDayOfWeek={currentDayOfWeek} currentDay={currentDay} dataFetch={dataFetch} setCheckTimeOut={setCheckTimeOut}/>
             </Row>
         </>
     );
   };
 
-const BoardLayout = () => {
+const HomeLayoutAdmin = () => {
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [selectedClass, setSelectedClass] = useState(null);
     const [showCoursePendingRegistered, setShowCoursePendingRegistered] = useState(false);
@@ -1199,6 +1141,18 @@ const BoardLayout = () => {
     const [dataFetch,setDataFetch]  = useState(null);
     const [dataFetchSchedule, setDataFetchSchedule] = useState(null);
     const [dataAfter, setDataAfter] = useState(null);
+
+    const [selectedKey, setSelectedKey] = useState('1');
+
+    const renderContent = () => {
+      switch (selectedKey) {
+        case '2':
+          return <div>Quản lý sinh viên</div>;
+        case '1':
+        default:
+          return <div>Trang chủ</div>;
+      }
+    };
 
     const handleFetchSchedule = async () => {
         console.log('fetch schedule');
@@ -1357,7 +1311,7 @@ const BoardLayout = () => {
             <Content style={{padding:'0 260px', }}>
                 <Row span={24}>
                     <Col style={{marginTop:10}}>
-                        <MySidebar/>
+                        <LeftSidebarAdmin setSelectedKey={setSelectedKey}/>
                     </Col>
                     <Col span={19} style={{ marginTop:10}}>
                         {/* {isLoading ? (
@@ -1366,10 +1320,13 @@ const BoardLayout = () => {
                             {/* <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData} dataFetch={dataFetch}/> */}
                         {/* )
                         } */}
-                        {
+                        {/* {
                             (dataFetch != null) ? (
                                 <MyContent handleDataPickerChange={handleDataPickerChange} dayOfWeek={dayOfWeek} selectedData={selectedData} dataFetch={dataFetch}/>
                             ) : (<></>)
+                        } */}
+                        {
+                            renderContent()
                         }
                     </Col>
                 </Row>
@@ -1380,4 +1337,4 @@ const BoardLayout = () => {
 }
 
 
-export default BoardLayout;
+export default HomeLayoutAdmin;

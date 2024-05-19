@@ -10,9 +10,9 @@ import HomeCourseRegistration from './layouts/homeCourseRegistration';
 import TimeTable from './pages/schedule/timeTable';
 import BoardLayout from './layouts/boardLayout';
 import HomeInstructorLayout from './layouts/homeInstructorLayout';
-import Mark from './pages/instructor/instructor.mark';
 import ReportLearingOutcomes from './pages/report/reportLearningOutcomes';
 import { Navigate } from 'react-router-dom';
+import HomeLayoutAdmin from './layouts/homeAdminLayout';
 
 const routes = [
     {
@@ -51,16 +51,13 @@ const routes = [
         element: <HomeInstructorLayout />,
     },
     {
-        path: '/instuctor/mark',
-        element: <Mark/>,
-    },
-    {
         path: '/reportLearningResult',
         element: <ReportLearingOutcomes/>,
     },
     {
-        path: '',
+        path: '/admin/dashboard',
         // element: <Navigate to="/home" />,
+        element: <HomeLayoutAdmin/>
     }
 ];
 
