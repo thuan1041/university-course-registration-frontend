@@ -22,7 +22,9 @@ const LeftSidebarAdmin = ({ setSelectedKey }) => {
             mode="inline"
             defaultSelectedKeys={['1']}
             style={{ height: '100%', borderRight: 0 }}
-            onClick={(e) => setSelectedKey(e.key)}
+            onClick={(e) => {
+              setSelectedKey(e.key)
+            }}
         >
           <Menu.Item key="1" icon={<HomeOutlined />} style={{ borderBottom: '1px solid #ddd' }}>
             Trang chủ

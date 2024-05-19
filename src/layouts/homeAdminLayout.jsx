@@ -26,6 +26,10 @@ import {
   } from '@ant-design/icons';
 import moment from 'moment';
 import LeftSidebarAdmin from "../pages/sidebar/LeftSideBarAdmin";
+import TeachingClasses from "../components/admin/TeachingClassing";
+import Mark from "../components/admin/Mark";
+import CourseManager from "../components/admin/CourseManager";
+import ClassRequest from "../components/admin/ClassRequest";
 
 
 const { Sider } = Layout; 
@@ -378,161 +382,6 @@ const dataFetch = [{
     "__v": 1
     }
 ]
-
-const timeTableMorning = [
-    [
-        {
-            "weekDay": 2,
-            "start": 1,
-            "end": 3,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Võ Văn Hải",
-            "room": "X10.08",
-            "name":"Lập trình phân tán"
-        },
-        'null', 
-        'null', 
-        {
-            "weekDay": 5,
-            "start": 1,
-            "end": 3,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Nguyễn Thị Thanh",
-            "room": "A.01",
-            "name":"Lập trình Java"
-        },
-        'null',
-        {
-            "weekDay": 7,
-            "start": 1,
-            "end": 3,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Trần Minh Thuận",
-            "room": "X10.08",
-            "name":"Kiến trúc và Thiết kế phần mềm"
-        },
-        'null'
-    ],
-    [
-        {
-            "weekDay": 2,
-            "start": 4,
-            "end": 6,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Trần Minh Thuận",
-            "room": "X10.08",
-            "name": "Kiến trúc và Thiết kế phần mềm",
-        },
-        'null', 
-        {
-            "weekDay": 4,
-            "start": 4,
-            "end": 5,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Võ Văn Thái",
-            "room": "X10.08",
-            "name":"Lập trình WWW"
-        },
-        'null', 
-        'null',
-        {
-            "weekDay": 7,
-            "start": 5,
-            "end": 6,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Võ Văn Hải",
-            "room": "X10.08",
-            "name":"Lập trình phân tán"
-
-        },
-        {
-            "weekDay": 8,
-            "start": 4,
-            "end": 6,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Võ Văn Thái",
-            "room": "X10.08",
-            "name":"Lập trình WWW"
-        },
-    ],
-];
-
-const timeTableAfternoon = [
-    [
-        {
-            "weekDay": 2,
-            "start": 7,
-            "end": 9,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Võ Văn Hải",
-            "room": "X10.08",
-            "name":"Lập trình phân tán",
-        },
-        'null', 
-        'null', 
-        {
-            "weekDay": 5,
-            "start": 7,
-            "end": 9,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Nguyễn Thị Thanh",
-            "room": "A.01",
-            "name":"Java"
-        },
-        'null',
-        {
-            "weekDay": 7,
-            "start": 8,
-            "end": 9,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Trần Minh Thuận",
-            "room": "X10.08",
-            "name":"Kiến trúc và Thiết kế phần mềm"
-        },
-        'null'
-    ],
-    [
-        {
-            "weekDay": 2,
-            "start": 10,
-            "end": 12,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Trần Minh Thuận",
-            "room": "X10.08",
-            "name":"Kiến trúc và Thiết kế phần mềm"
-        },
-        'null', 
-        {
-            "weekDay": 4,
-            "start": 10,
-            "end": 12,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Võ Văn Thái",
-            "room": "X10.08",
-            "name":"Lập trình WWW"
-        },
-        'null', 
-        'null',
-        {
-            "weekDay": 7,
-            "start": 9,
-            "end": 12,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Võ Văn Hải",
-            "room": "X10.08",
-            "name":"Lập trình Lập trình phân tán"
-        },
-        {
-            "weekDay": 8,
-            "start": 10,
-            "end": 12,
-            "_id": "664604bfe95feb70c573e80f",
-            "instructor": "Võ Văn Thái",
-            "room": "X10.08",
-            "name":"Lập trình WWW"
-        },
-    ],
-];
 
 const fetchDataTimeTable = (dataAfter) => {
     if(dataAfter != null){
@@ -1143,15 +992,81 @@ const HomeLayoutAdmin = () => {
     const [dataAfter, setDataAfter] = useState(null);
 
     const [selectedKey, setSelectedKey] = useState('1');
+    const [isMarkVisible, setIsMarkVisible] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState(null);
+
+
+    // quản lí accept
+    const [isClassRequestVisible, setIsClassRequestVisible] = useState(false);
+
+    const handleMenuClick = ({ key }) => {
+        setSelectedKey(key);
+        setIsMarkVisible(false); // Reset trạng thái khi chuyển menu
+    };
+    const handleStudents = (record) => {
+        setSelectedRecord(record);
+        setIsClassRequestVisible(true);
+    }
+
+    const handleScore = (record) => {
+        setSelectedRecord(record);
+        setIsMarkVisible(true);
+    };
+
+    const handleBack = () => {
+        setIsMarkVisible(false);
+        setIsClassRequestVisible(false);
+        setSelectedRecord(null);
+    };
 
     const renderContent = () => {
-      switch (selectedKey) {
-        case '2':
-          return <div>Quản lý sinh viên</div>;
-        case '1':
-        default:
-          return <div>Trang chủ</div>;
-      }
+        if (isMarkVisible) {
+            return <>
+                <Card style={{paddingLeft:10, background:'#fff', margin:'10px', marginTop:10}}>
+                    <Mark record={selectedRecord} onBack={handleBack} />
+                </Card>
+            </>
+        }
+        if (isClassRequestVisible) {
+            return <>
+                <Card style={{paddingLeft:10, background:'#fff', margin:'10px', marginTop:10}}>
+                    <ClassRequest record={selectedRecord} onBack={handleBack} />
+                </Card>
+            </>
+        }
+
+        switch (selectedKey) {
+            case '1':
+                return (
+                    <Row span={24} style={{ background: '#fff' }}>
+                        <div>
+                            <h3 style={{ padding: 10, fontWeight: '600' }}>Danh sách lớp học phần</h3>
+                        </div>
+                        <Content direction="vertical" style={{ marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10 , margin:10}}>
+                            <TeachingClasses handleStudents={handleStudents} handleScore={handleScore} setIsClassRequestVisible={setIsClassRequestVisible} setIsMarkVisible={setIsMarkVisible}  />
+                        </Content>
+                    </Row>
+                );
+            case '2':
+                return <div>Quản lí</div>;
+            case '3':
+                return <></>
+            case '4':
+                return (
+                    <Row span={24} style={{ background: '#fff' }}>
+                        <div>
+                            <h3 style={{ padding: 10, fontWeight: '600' }}>Danh sách lớp học phần</h3>
+                        </div>
+                        <Content direction="vertical" style={{ marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10 , margin:10}}>
+                            <TeachingClasses handleScore={handleScore} handleStudents={handleStudents} setIsMarkVisible={setIsMarkVisible}  />
+                        </Content>
+                    </Row>
+                );
+            case '5':
+                return <div>Quản lí</div>;
+            default:
+                return <div>Trang chủ</div>;
+        }
     };
 
     const handleFetchSchedule = async () => {
@@ -1311,7 +1226,9 @@ const HomeLayoutAdmin = () => {
             <Content style={{padding:'0 260px', }}>
                 <Row span={24}>
                     <Col style={{marginTop:10}}>
-                        <LeftSidebarAdmin setSelectedKey={setSelectedKey}/>
+                        <div style={{ background:'#fff', marginRight:10}}>
+                            <LeftSidebarAdmin setSelectedKey={setSelectedKey}/>
+                        </div>
                     </Col>
                     <Col span={19} style={{ marginTop:10}}>
                         {/* {isLoading ? (

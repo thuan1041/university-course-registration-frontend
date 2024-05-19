@@ -33,6 +33,31 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 const ReportTable = ({ data }) => {
+    const [getResultCourse, setResultCourse] = useState([]);
+    const savedData = localStorage.getItem('userData');
+    // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
+    const parsedData = JSON.parse(savedData);
+    // Sử dụng dữ liệu đã lấy từ localStorage
+    const studenId = parsedData?.payload?.studentId;
+
+    
+    const fetchResultCourse =  async (studenId) => {
+        const payload = {
+            studentId: studenId
+        }
+        try {
+            const rs = await axios.post(`student/getStudyResult`, payload);
+            if(rs.errCode === 0){
+                setResultCourse(rs.data)
+            }
+        } catch (error) {
+            console.log("error",error);
+        }
+    }
+    useEffect(() => {
+        fetchResultCourse(studenId)
+    }, []);
+
     const generateFakeData = () => {
         const data = [];
         const gradeScale = ['F', 'D', 'D+', 'C', 'C+', 'B', 'B+', 'A', 'A+'];
@@ -63,49 +88,50 @@ const ReportTable = ({ data }) => {
         {
             title: 'STT',
             dataIndex: 'stt',
-            key: 'stt',
+            render: (_, __, index) => index + 1,
         },
         {
             title: 'Mã lớp học phần',
-            dataIndex: 'maLopHP',
-            key: 'maLopHP',
+            dataIndex: '_id',
+            key: '_id',
+            render: (_id) => `LHP${_id.slice(-8)}`,
         },
         {
             title: 'Tên môn học',
-            dataIndex: 'tenMonHoc',
-            key: 'tenMonHoc',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: 'Số tín chỉ',
-            dataIndex: 'soTinChi',
-            key: 'soTinChi',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: 'Điểm',
-            dataIndex: 'diem',
-            key: 'diem',
+            dataIndex: 'point_10',
+            key: 'point_10',
         },
         {
             title: 'Thang điểm 4',
-            dataIndex: 'thangDiem4',
-            key: 'thangDiem4',
+            dataIndex: 'point_4',
+            key: 'point_4',
         },
         {
             title: 'Thang điểm chữ',
-            dataIndex: 'thangDiemChu',
-            key: 'thangDiemChu',
+            dataIndex: 'point_char',
+            key: 'point_char',
         },
         {
             title: 'Xếp loại',
-            dataIndex: 'xepLoai',
-            key: 'xepLoai',
+            dataIndex: 'academic_performance',
+            key: 'academic_performance',
         },
     ];
     
 
     return (
         <Table
-            dataSource={fakeData}
+            dataSource={getResultCourse}
             columns={columns}
             pagination={false} // Tắt phân trang nếu cần
         />
