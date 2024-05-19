@@ -32,7 +32,9 @@ const DashBoardMenu = () => {
         </a>
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xl={3}>
+        <a href="/reportLearningResult">
         <IconLinkCard icon={BookOutlined} title="Kết quả học tập" />
+        </a>
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xl={3}>
         <a href="/courseRegistration">

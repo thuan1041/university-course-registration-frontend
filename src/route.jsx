@@ -11,6 +11,8 @@ import TimeTable from './pages/schedule/timeTable';
 import BoardLayout from './layouts/boardLayout';
 import HomeInstructorLayout from './layouts/homeInstructorLayout';
 import Mark from './pages/instructor/instructor.mark';
+import ReportLearingOutcomes from './pages/report/reportLearningOutcomes';
+import { Navigate } from 'react-router-dom';
 
 const routes = [
     {
@@ -51,6 +53,14 @@ const routes = [
     {
         path: '/instuctor/mark',
         element: <Mark/>,
+    },
+    {
+        path: '/reportLearningResult',
+        element: <ReportLearingOutcomes/>,
+    },
+    {
+        path: '',
+        // element: <Navigate to="/home" />,
     }
 ];
 

@@ -1,25 +1,12 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import './homeSubLayout.scss';
+import '../../layouts/homeSubLayout.scss';
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 import { Button, Drawer, Form, Row, Select, message, theme , Menu, Table} from 'antd';
-import logo from '../../public/images/dai-hoc-cong-nghiep-bacground.png'
-import Courses from "../components/courses/Courses";
-import RegistrationControl from "../components/registrationControl/RegistrationControl";
-import StudentInfo from "../components/studentInfo/StudentInfo";
-import CoursePendingRegistered from "../components/courses/CoursePendingRegistered";
-import ClassDetails from "../components/courses/ClassDetails";
-import axios from '../../src/utils/axios';
-import RegisteredCourse from "../components/courses/RegisteredCourse";
+import logo from '../../../public/images/dai-hoc-cong-nghiep-bacground.png'
+import axios from '../../utils/axios';
 import { Layout, Input, Avatar, Dropdown, Col, Card, DatePicker, Radio, Space, Spin, Alert, InputNumber } from 'antd';
 import { HomeOutlined, BellOutlined, UserOutlined, DownOutlined } from '@ant-design/icons';
-import StudentDetail from "../components/studentInfo/StuddentDetail";
-import DashBoardMenu from "../components/dasdboard/DashbooardMenu";
-import DashboardLearningProgress from "../components/dasdboard/DashboardLearningProgress";
-import DashboardNotification from "../components/dasdboard/DashboardNotification";
-import { useFetcher, useNavigate } from "react-router-dom";
-import ChangePasswordModal from "../../src/modals/app/changePasswordModal";
-import { useSelector } from "react-redux";
 import {
     InfoCircleOutlined,
     BookOutlined,
@@ -36,6 +23,7 @@ import {
     SaveOutlined
   } from '@ant-design/icons';
 import moment from 'moment';
+import LeftSidebar from "../sidebar/LeftSidebar";
 
 
 const { Search } = Input;
@@ -44,65 +32,32 @@ const {Header, Content, Footer} = Layout;
 const { Sider } = Layout; 
 const { SubMenu } = Menu;
 
-const Mark = () => {
-    const [dataSource, setDataSource] = useState([
-        // Dữ liệu mẫu
-        { key: '1', stt: 1, studentId: 'SV001', fullName: 'Nguyễn Văn A', grade: 0 },
-        { key: '2', stt: 2, studentId: 'SV002', fullName: 'Trần Thị B', grade: 0 },
-        // Thêm các dòng dữ liệu cho các học viên khác ở đây
-    ]);
-    const [editingKey, setEditingKey] = useState('');
-
-
-    const handleFinishCourse = async (point)=>{
-        const payload = {
-            "_id": "664604bfe95feb70c573e80d",
-            "studentId": 20051041,
-            "point": point
+const ReportTable = ({ data }) => {
+    const generateFakeData = () => {
+        const data = [];
+        const gradeScale = ['F', 'D', 'D+', 'C', 'C+', 'B', 'B+', 'A', 'A+'];
+        const honorScale = ['Kém', 'Yếu', 'Trung bình', 'Khá', 'Giỏi', 'Xuất sắc'];
+    
+        for (let i = 1; i <= 10; i++) {
+            const gradeIndex = Math.floor(Math.random() * gradeScale.length);
+            const honorIndex = Math.floor(Math.random() * honorScale.length);
+    
+            data.push({
+                stt: i,
+                maLopHP: `LHP00${i}`,
+                tenMonHoc: `Môn học ${i}`,
+                soTinChi: Math.floor(Math.random() * 5) + 1,
+                diem: parseFloat((Math.random() * 10).toFixed(1)),
+                thangDiem4: Math.floor(Math.random() * 4) + 1,
+                thangDiemChu: gradeScale[gradeIndex],
+                xepLoai: honorScale[honorIndex]
+            });
         }
-        try {
-            const rs = await axios.put(`/course/finishCourse`, payload)
-            if(rs.errCode === 0){
-                message.success("Chấm điểm thành công")
-            } 
-            else
-            if(rs.errCode === 6 ) {
-                message.error("Bạn đã chấm điểm không đạt cho học viên này")
-            }
-        } catch (error) {
-            console.log("error",error);
-        }
-    }
-
-    const isEditing = (record) => record.key === editingKey;
-
-    const edit = (record) => {
-        setEditingKey(record.key);
+        return data;
     };
-
-    const cancel = () => {
-        setEditingKey('');
-    };
-
-    const handleGradeChange = (key, value) => {
-        const newData = [...dataSource];
-        const index = newData.findIndex((item) => key === item.key);
-        if (index > -1) {
-            newData[index].grade = value;
-            setDataSource(newData);
-        }
-    };
-
-    const save = (key) => {
-        const newData = [...dataSource];
-        const index = newData.findIndex((item) => key === item.key);
-        if (index > -1) {
-            // Gửi yêu cầu lưu điểm đến máy chủ
-            // Sau khi lưu thành công, hủy chỉnh sửa
-            handleFinishCourse(editingKey)
-            setEditingKey('');
-        }
-    };
+    
+    
+    const fakeData = generateFakeData();
 
     const columns = [
         {
@@ -111,68 +66,54 @@ const Mark = () => {
             key: 'stt',
         },
         {
-            title: 'Mã số sinh viên',
-            dataIndex: 'studentId',
-            key: 'studentId',
+            title: 'Mã lớp học phần',
+            dataIndex: 'maLopHP',
+            key: 'maLopHP',
         },
         {
-            title: 'Họ và tên',
-            dataIndex: 'fullName',
-            key: 'fullName',
+            title: 'Tên môn học',
+            dataIndex: 'tenMonHoc',
+            key: 'tenMonHoc',
+        },
+        {
+            title: 'Số tín chỉ',
+            dataIndex: 'soTinChi',
+            key: 'soTinChi',
         },
         {
             title: 'Điểm',
-            dataIndex: 'grade',
-            key: 'grade',
-            render: (_, record) => (
-                isEditing(record) ? (
-                    <InputNumber
-                        defaultValue={record.grade}
-                        onChange={(value) => handleGradeChange(record.key, value)}
-                    />
-                ) : record.grade
-            ),
+            dataIndex: 'diem',
+            key: 'diem',
         },
         {
-            title: 'Hành động',
-            key: 'action',
-            render: (_, record) => {
-                const editable = isEditing(record);
-                return (
-                    <Space size="middle">
-                        {editable ? (
-                            <>
-                                <Button
-                                    type="primary"
-                                    icon={<SaveOutlined />}
-                                    onClick={() => save(record.key)}
-                                />
-                                <Button onClick={cancel}>Hủy</Button>
-                            </>
-                        ) : (
-                            <Button
-                                type="primary"
-                                icon={<EditOutlined />}
-                                onClick={() => edit(record)}
-                            />
-                        )}
-                    </Space>
-                );
-            },
+            title: 'Thang điểm 4',
+            dataIndex: 'thangDiem4',
+            key: 'thangDiem4',
+        },
+        {
+            title: 'Thang điểm chữ',
+            dataIndex: 'thangDiemChu',
+            key: 'thangDiemChu',
+        },
+        {
+            title: 'Xếp loại',
+            dataIndex: 'xepLoai',
+            key: 'xepLoai',
         },
     ];
-    return (
-        <>
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                pagination={false} // Tắt phân trang nếu danh sách học viên dài
-            />
-        </>
-    )
-}
+    
 
-const HomeInstructorLayout = () => {
+    return (
+        <Table
+            dataSource={fakeData}
+            columns={columns}
+            pagination={false} // Tắt phân trang nếu cần
+        />
+    );
+};
+
+
+const ReportLearingOutcomes = () => {
     const savedData = localStorage.getItem('userData');
     const parsedData = JSON.parse(savedData);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -318,10 +259,10 @@ const HomeInstructorLayout = () => {
             <>
                 <Row span={24} style={{background: '#fff'}}>
                     <div>
-                        <h3  style={{padding:10, fontWeight:'600'}}>Lớp học phần đang dạy</h3>
+                        <h3  style={{padding:10, fontWeight:'600'}}>Kết quả học tập</h3>
                     </div>
                     <Content direction="vertical" style={{marginTop:10, display:'flex', flexDirection:'row', justifyContent:'space-between', paddingLeft:10}}>
-                        <TeachingClasses></TeachingClasses>
+                        <ReportTable/>
                     </Content>
                 </Row>
             </>
@@ -349,53 +290,6 @@ const HomeInstructorLayout = () => {
             </Menu.Item>
         </Menu>
     );
-
-    const MySidebar = () => {
-        return (
-            <Layout style={{ minHeight: '100vh' }}>
-            <Sider style={{ background: '#fff', borderRight: '1px solid #ddd' }}>
-              <Menu
-                mode="inline"
-                defaultSelectedKeys={['1']}
-                style={{ height: '100%', borderRight: 0 }}
-              >
-                <Menu.Item key="1" icon={<HomeOutlined />} style={{ borderBottom: '1px solid #ddd' }}>
-                  Trang chủ
-                </Menu.Item>
-                <SubMenu key="sub1" icon={<InfoCircleOutlined />} title="Thông tin chung" style={{ borderBottom: '1px solid #ddd' }}>
-                  <Menu.Item key="2" style={{ borderBottom: '1px solid #ddd' }}>Thông tin sinh viên</Menu.Item>
-                  <Menu.Item key="3" style={{ borderBottom: '1px solid #ddd' }}>Ghi chú nhắc nhở</Menu.Item>
-                  <Menu.Item key="4" style={{ borderBottom: '1px solid #ddd' }}>Đề xuất cập nhật thông tin</Menu.Item>
-                </SubMenu>
-                <SubMenu key="sub2" icon={<BookOutlined />} title="Học tập" style={{ borderBottom: '1px solid #ddd' }}>
-                  <Menu.Item key="5" style={{ borderBottom: '1px solid #ddd' }}>Kết quả học tập</Menu.Item>
-                  <Menu.Item key="6" style={{ borderBottom: '1px solid #ddd' }}>Lịch học tập lớp học danh nghĩa</Menu.Item>
-                </SubMenu>
-                <SubMenu key="sub3" icon={<FormOutlined />} title="Đăng ký học phần" style={{ borderBottom: '1px solid #ddd' }}>
-                  <Menu.Item key="7" style={{ borderBottom: '1px solid #ddd' }}>Chương trình khung</Menu.Item>
-                  <Menu.Item key="8" style={{ borderBottom: '1px solid #ddd' }}>Đăng ký học phần</Menu.Item>
-                </SubMenu>
-                <SubMenu key="sub4" icon={<DollarCircleOutlined />} title="Học phí" style={{ borderBottom: '1px solid #ddd' }}>
-                  <Menu.Item key="9" style={{ borderBottom: '1px solid #ddd' }}>Tra cứu công nợ</Menu.Item>
-                  <Menu.Item key="10" style={{ borderBottom: '1px solid #ddd' }}>Thanh toán trực tuyến</Menu.Item>
-                  <Menu.Item key="11" style={{ borderBottom: '1px solid #ddd' }}>Phiếu thu tổng hợp</Menu.Item>
-                </SubMenu>
-              </Menu>
-            </Sider>
-            {/* <Sider width={200} style={{ background: '#fff' }}>
-                <Menu
-                    mode="inline"
-                    defaultSelectedKeys={['1']}
-                    style={{ height: '100%', borderRight: 0 }}
-                >
-                    <SubMenu key="sub1" icon={<InfoCircleOutlined />} title="Quản lí lớp học phần" style={{ borderBottom: '1px solid #ddd' }}>
-                        <Menu.Item key="1" style={{ borderBottom: '1px solid #ddd' }}>Lớp học</Menu.Item>
-                    </SubMenu>
-                </Menu>
-            </Sider> */}
-          </Layout>
-        );
-      };
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -428,14 +322,10 @@ const HomeInstructorLayout = () => {
         <Content style={{padding:'0 260px', }}>
             <Row span={24}>
                 <Col style={{marginTop:10}}>
-                    <MySidebar/>
+                    <LeftSidebar/>
                 </Col>
                 <Col span={19} style={{ marginTop:10}}>
                     <MyContent/>
-                    <div>
-                        <h3  style={{padding:10, fontWeight:'600'}}>Chấm điểm</h3>
-                    </div>
-                    <Mark/>
                 </Col>
             </Row>
         </Content>
@@ -444,4 +334,4 @@ const HomeInstructorLayout = () => {
     )
 }
 
-export default HomeInstructorLayout;
+export default ReportLearingOutcomes;
