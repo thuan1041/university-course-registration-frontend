@@ -29,7 +29,9 @@ const Mark = ({ onBack }) => {
     }, []);
 
     const handleFinishCourse = async (key) => {
+        console.log("key in cham diem", key);
         const student = dataSource.find(item => item.key === key);
+        console.log("student id in handle cham diem", student.studentId, student.grade);
         const payload = {
             "_id": "664604bfe95feb70c573e80d",
             "studentId": student.studentId,
@@ -67,6 +69,7 @@ const Mark = ({ onBack }) => {
     };
 
     const save = (key) => {
+        console.log("key in save", key);
         handleFinishCourse(key);
         setEditingKey('');
     };
@@ -88,46 +91,46 @@ const Mark = ({ onBack }) => {
             dataIndex: 'name',
             key: 'name',
         },
-        {
-            title: 'Điểm',
-            dataIndex: 'grade',
-            key: 'grade',
-            render: (_, record) => (
-                isEditing(record) ? (
-                    <InputNumber
-                        defaultValue={record.grade !== undefined ? record.grade : 0}
-                        onChange={(value) => handleGradeChange(record.key, value)}
-                    />
-                ) : record.grade
-            ),
-        },
-        {
-            title: 'Hành động',
-            key: 'action',
-            render: (_, record) => {
-                const editable = isEditing(record);
-                return (
-                    <Space size="middle">
-                        {editable ? (
-                            <>
-                                <Button
-                                    type="primary"
-                                    icon={<SaveOutlined />}
-                                    onClick={() => save(record.key)}
-                                />
-                                <Button onClick={cancel}>Hủy</Button>
-                            </>
-                        ) : (
-                            <Button
-                                type="primary"
-                                icon={<EditOutlined />}
-                                onClick={() => edit(record)}
-                            />
-                        )}
-                    </Space>
-                );
-            },
-        },
+        // {
+        //     title: 'Điểm',
+        //     dataIndex: 'grade',
+        //     key: 'grade',
+        //     render: (_, record) => (
+        //         isEditing(record) ? (
+        //             <InputNumber
+        //                 defaultValue={record.grade !== undefined ? record.grade : 1}
+        //                 onChange={(value) => handleGradeChange(record.key, value)}
+        //             />
+        //         ) : record.grade
+        //     ),
+        // },
+        // {
+        //     title: 'Hành động',
+        //     key: 'action',
+        //     render: (_, record) => {
+        //         const editable = isEditing(record);
+        //         return (
+        //             <Space size="middle">
+        //                 {editable ? (
+        //                     <>
+        //                         <Button
+        //                             type="primary"
+        //                             icon={<SaveOutlined />}
+        //                             onClick={() => save(record.key)}
+        //                         />
+        //                         <Button onClick={cancel}>Hủy</Button>
+        //                     </>
+        //                 ) : (
+        //                     <Button
+        //                         type="primary"
+        //                         icon={<EditOutlined />}
+        //                         onClick={() => edit(record)}
+        //                     />
+        //                 )}
+        //             </Space>
+        //         );
+        //     },
+        // },
     ];
 
     return (
