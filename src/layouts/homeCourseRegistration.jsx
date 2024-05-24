@@ -205,6 +205,8 @@ const homeCourseRegistration = () => {
     const [getRegisteredCourseByStudentId, setGetRegisteredCourseByStudentId] = useState();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [otp, setOtp] = useState('');
+    const [isModalVisibleVerify, setIsModalVisibleVerify] = useState(false);
+    const [refreshCourses, setRefreshCourses] = useState(false)
 
     const savedData = localStorage.getItem('userData');
     const parsedData = JSON.parse(savedData);
@@ -251,10 +253,27 @@ const homeCourseRegistration = () => {
         fetchGetCourseByMajor()
     }, [])
 
-    const handleRegisterCourse = () => {
-        setIsModalVisible(true);
+    const handleRegisterCourse = async () => {
+        // setIsModalVisible(true);
         // handleRegisteredCourse()
-        handleSendOtp()
+        // setTimeout(() => {
+        //     handleSendOtp()
+        // }, 1000);
+        let rs = await handleRegisteredCourse()
+        if (rs === 0) {
+            message.success("Đăng ký vào danh sách chờ thành công.");
+            setIsModalVisible(true);
+            message.loading("Vui lòng chờ xác minh OTP để hoàn tất đăng ký lớp học phần");
+            handleSendOtp()
+        }
+        if (rs === 3) {
+            setIsModalVisible(false);
+            message.warning("Học kỳ này sinh viên đã đăng ký vào lớp học phần này rồi");
+        }
+        if (rs === 4) {
+            // message.warning("Sinh viên đã đăng ký vào lớp học phần này và đang chờ được xác nhận. Vui lòng liên hệ với giáo vụ để được hỗ trợ.");
+            setIsModalVisibleVerify(true);
+        }
     };
 
     const handleSendOtp = async () => {
@@ -262,15 +281,14 @@ const homeCourseRegistration = () => {
             "email": "tranminhthuan030302@gmail.com"
             // "email": parsedData?.payload?.email,
         }
-        console.log("email", parsedData?.payload?.email);
-        console.log("payload", payload);
         try {
             const rs = await axios.post(`/student/sendOTP`, payload)
             if (rs.errCode === 0) {
-                message.success("Đã gởi mã OTP đến email của sinh viên");
-                
+                // message.success("Đã gởi mã OTP đến email của sinh viên");
+                return 0
             } else {
-                message.error("Chưa gởi được mã");
+                // message.error("Chưa gởi được mã");
+                return 1
             }
         } catch (error) {
             console.log("error", error);
@@ -282,22 +300,53 @@ const homeCourseRegistration = () => {
             "_id": getClassIdByProps,
             "studentId": parsedData?.payload?.studentId
         }
-
         console.log("payload", payload);
         try {
             const rs = await axios.post(`/course/registerClass`, payload)
             console.log("222222", rs);
             if (rs.errCode === 0) {
-                message.success("Đăng ký vào danh sách chờ thành công. Vui lòng chờ xác minh OTP để hoàn tất đăng ký");
-            // } else if (rs.errCode === 4) {
-            //     message.warning("Sinh viên đã đăng ký vào lớp học phần này và đang chờ được xác nhận");
-            // } else if (rs.errCode === 3) {
-            //     message.warning("Sinh viên đã có trong danh sách lớp học phần này rồi");
+                // message.success("Đăng ký vào danh sách chờ thành công.");
+                // // setTimeout(() => {
+                // message.loading("Vui lòng chờ xác minh OTP để hoàn tất đăng ký lớp học phần");
+                // }, 2000);
+                return 0
+            } else if (rs.errCode === 4) {
+                // message.warning("Sinh viên đã đăng ký vào lớp học phần này và đang chờ được xác nhận. Vui lòng liên hệ với giáo vụ để được hỗ trợ.");
+                return 4
+            } else if (rs.errCode === 3) {
+                // message.warning("Sinh viên đã có trong danh sách lớp học phần này rồi");
+                return 3
             } else {
-                message.error("Đăng ký thất bại");
+                message.error("Đăng ký vào danh sách chờ thất bại");
+                return 1
             }
         } catch (error) {
             console.log("error", error);
+        }
+    }
+
+    const handleVerifyOtp = async () => {
+        const payload = {
+            "email": "tranminhthuan030302@gmail.com",
+            "otp": otp
+        }
+        console.log("payload in otp verity", payload);
+        try {
+            let rs = await axios.post(`/student/verifyOTP`, payload)
+            if (rs.errCode === 0) {
+                // message.success("Xác minh email thành công");
+                // setOtp('');
+                // setIsModalVisible(false)
+                return 0
+            } 
+            if (rs.errCode === 1) {
+                // message.error("Xác minh thất bại. Vui lòng kiểm tra lại mã OTP và thử lại");
+                // setOtp('');
+                return 1
+            }
+        } catch (error) {
+            console.log("error in veriry", error);
+            return 1
         }
     }
 
@@ -310,30 +359,96 @@ const homeCourseRegistration = () => {
         try {
             const rs = await axios.put(`/course/acceptStudentToClass`, payload);
             if (rs.errCode === 0) {
-                message.success("Đăng ký môn học thành công");
-                setIsModalVisible(false);
+                // message.success("Đăng ký vào lớp học thành công");
+                // setIsModalVisible(false);
+                return 0
             } else if (rs.errCode === 3) {
-                message.error("Sinh viên đã có trong danh sách lớp học phần này rồi");
+                // message.error("Sinh viên đã có trong danh sách lớp học phần này rồi");
+                return 3
             }
             else {
-                message.error("Đăng ký thất bại");
+                // message.error("Đăng ký thất bại");
+                return 4
             }
         } catch (error) {
             message.error("Đã có lỗi xảy ra");
         }
     }
     const handleOtpSubmit = async () => {
-        setIsModalVisible(false);
-        handleRegisteredCourse()
-        handleAcceptClasses();
+        if (otp === '') {
+            message.error("Vui lòng nhập mã OTP");
+            return
+        } else {
+            let rs = await handleVerifyOtp()
+            if (rs == 0) {
+                // handleAcceptClasses()
+                let rs = await handleAcceptClasses()
+                if (rs == 0) {
+                    message.success("Đăng ký vào lớp học thành công");
+                    setIsModalVisible(false);
+                    setOtp('')
+                    // setRefreshCourses(!refreshCourses)
+                    setRefreshCourses(prev => !prev)
+                }
+                if (rs == 3) {
+                    message.warning("Sinh viên đã có trong danh sách lớp học phần này rồi");
 
+                }
+                if (rs == 4) {
+                    message.error("Đăng ký thất bại");
+                }
+            }
+            if (rs == 1) {
+                setOtp('')
+                message.error("Xác minh thất bại. Vui lòng kiểm tra lại mã OTP và thử lại");
+            }
+        }
     };
 
     const handleResendOtp = async () => {
-        handleSendOtp()
-        message.success("Mã OTP đã được gửi lại");
+        // handleSendOtp()
+        // message.success("Mã OTP đã được gửi lại");
+        // setOtp('')
+        let rs = await handleSendOtp()
+        if(rs === 0){
+            message.success("Mã OTP đã được gửi lại");
+            setOtp('')
+        }
+        if(rs === 1){
+            message.error("Chưa gởi được mã");
+        }
     };
 
+    //  modal hien thi thong bao 
+    const handleOk = async () => {
+        // Handle email verification logic here
+        let rs = await handleSendOtp()
+        if (rs === 0) {
+            message.success("Đã gởi mã OTP đến email của sinh viên");
+            setIsModalVisibleVerify(false);
+            setIsModalVisible(true);
+            handleOtpSubmit()
+        }
+        if (rs === 1) {
+            message.error("Chưa gởi được mã");
+        }
+
+
+    };
+
+    const handleCancel = () => {
+        setIsModalVisibleVerify(false);
+    };
+
+    const checkRegistrationStatus = (rs) => {
+        if (rs === 4) {
+            setIsModalVisibleVerify(true);
+        }
+    };
+
+    useEffect(() => {
+        fetchGetRegisteredCourseByStudentId()
+    }, [refreshCourses]);
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Content style={{ padding: '0 220px' }}>
@@ -382,6 +497,7 @@ const homeCourseRegistration = () => {
                 visible={isModalVisible}
                 onOk={handleOtpSubmit}
                 onCancel={() => setIsModalVisible(false)}
+                required
                 footer={[
                     <Button key="resend" type="link" onClick={handleResendOtp}>Gửi lại mã</Button>,
                     <Button key="submit" type="primary" onClick={handleOtpSubmit}>Hoàn thành</Button>,
@@ -392,6 +508,16 @@ const homeCourseRegistration = () => {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                 />
+            </Modal>
+            <Modal
+                title="Thông báo"
+                visible={isModalVisibleVerify}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                okText="Xác minh email"
+                cancelText="Hủy"
+            >
+                <p>Sinh viên đã đăng ký vào lớp học phần này và đang chờ được xác nhận. Vui lòng liên hệ với giáo vụ để được hỗ trợ hoặc xác minh email otp để hoàn tất đăng ký.</p>
             </Modal>
         </Layout>
     );
