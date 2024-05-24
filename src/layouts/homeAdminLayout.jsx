@@ -1043,7 +1043,7 @@ const HomeLayoutAdmin = () => {
                             <h3 style={{ padding: 10, fontWeight: '600' }}>Danh sách lớp học phần</h3>
                         </div>
                         <Content direction="vertical" style={{ marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10 , margin:10}}>
-                            <TeachingClasses handleStudents={handleStudents} handleScore={handleScore} setIsClassRequestVisible={setIsClassRequestVisible} setIsMarkVisible={setIsMarkVisible}  />
+                            <TeachingClasses handleStudents={handleStudents} handleScore={handleScore} setIsClassRequestVisible={setIsClassRequestVisible} setIsMarkVisible={setIsMarkVisible} />
                         </Content>
                     </Row>
                 );
@@ -1052,16 +1052,16 @@ const HomeLayoutAdmin = () => {
             case '3':
                 return <></>
             case '4':
-                return (
-                    <Row span={24} style={{ background: '#fff' }}>
-                        <div>
-                            <h3 style={{ padding: 10, fontWeight: '600' }}>Danh sách lớp học phần</h3>
-                        </div>
-                        <Content direction="vertical" style={{ marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10 , margin:10}}>
-                            <TeachingClasses handleScore={handleScore} handleStudents={handleStudents} setIsMarkVisible={setIsMarkVisible}  />
-                        </Content>
-                    </Row>
-                );
+                // return (
+                //     <Row span={24} style={{ background: '#fff' }}>
+                //         <div>
+                //             <h3 style={{ padding: 10, fontWeight: '600' }}>Danh sách lớp học phần</h3>
+                //         </div>
+                //         <Content direction="vertical" style={{ marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10 , margin:10}}>
+                //             <TeachingClasses handleScore={handleScore} handleStudents={handleStudents} setIsMarkVisible={setIsMarkVisible}  />
+                //         </Content>
+                //     </Row>
+                // );
             case '5':
                 return <div>Quản lí</div>;
             default:
