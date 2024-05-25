@@ -207,6 +207,7 @@ const homeCourseRegistration = () => {
     const [otp, setOtp] = useState('');
     const [isModalVisibleVerify, setIsModalVisibleVerify] = useState(false);
     const [refreshCourses, setRefreshCourses] = useState(false)
+    const [getFailedCourse, setGetFailedCourse] = useState();
 
     const savedData = localStorage.getItem('userData');
     const parsedData = JSON.parse(savedData);
@@ -253,8 +254,19 @@ const homeCourseRegistration = () => {
             setGetCourseByMajor(rs.data);
         }
     }
+    async function fetchGetFailedCourse() {
+        const payload = {
+            "major": parsedData?.payload?.major?._id
+            , "studentId": parsedData?.payload?.studentId
+        };
+        const rs = await axios.post(`/course/getFailedCource`, payload);
+        if (rs.errCode === 0) {
+            setGetFailedCourse(rs.data);
+        }
+    }
     useEffect(() => {
         fetchGetCourseByMajor()
+        fetchGetFailedCourse()
     }, [])
 
     const handleRegisterCourse = async () => {
@@ -457,6 +469,9 @@ const homeCourseRegistration = () => {
     useEffect(() => {
         fetchGetRegisteredCourseByStudentId()
     }, [refreshCourses]);
+
+    const [stateCourses, setStateCourse] = useState("new");
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Content style={{ padding: '0 220px' }}>
@@ -466,10 +481,10 @@ const homeCourseRegistration = () => {
                 <StudentInfo />
                 <Content style={{ backgroundColor: '#ffffff', border: '2px solid #E1EBF6', borderRadius: 6, marginTop: 10 }}>
                     <h1 className="title2" style={{ textAlign: 'center', paddingTop: 10, marginBottom: 30, color: '#0C6FBE' }}>ĐĂNG KÝ HỌC PHẦN</h1>
-                    <RegistrationControl />
+                    <RegistrationControl setStateCourse={setStateCourse} />
                     <Content>
                         <h3 className="title2" style={{ textAlign: 'center', paddingTop: 30, marginBottom: 20 }}>MÔN HỌC PHẦN ĐANG CHỜ ĐƯỢC ĐĂNG KÝ</h3>
-                        <Courses allCoursesData={getCourseByMajor} onCourseRowClick={handleCourseRowClick} />
+                        <Courses stateCourses={stateCourses} allCoursesData={getCourseByMajor} allFailedCourseData={getFailedCourse} onCourseRowClick={handleCourseRowClick} />
                         {showCoursePendingRegistered &&
                             <>
                                 <h3 className="title2" style={{ textAlign: 'center', paddingTop: 30, marginBottom: 20 }}>LỚP HỌC PHẦN ĐANG CHỜ ĐƯỢC ĐĂNG KÝ</h3>

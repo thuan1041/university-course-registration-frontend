@@ -4,9 +4,9 @@ import { Tabs } from 'antd';
 import GmailAuthencation from "../../pages/auth/auth.gmail";
 import NewPassword from "../../pages/auth/auth.newPassword";
 
-const FogotPassword = ({studentFogotPasswordData}) => {
+const FogotPassword = ({ studentFogotPasswordData }) => {
     const [activeKey, setActiveKey] = useState('1'); // Trạng thái của tab activ
-    
+
     const handleConfirmGmail = () => {
         setActiveKey('2'); // Chuyển sang tab "Mật khẩu mới" khi xác nhận gmail
     };
@@ -16,7 +16,7 @@ const FogotPassword = ({studentFogotPasswordData}) => {
             {
                 key: '1',
                 label: <p className="title-login title-login--l">(1) NHẬP MÃ XÁC MINH</p>,
-                children: <GmailAuthencation  studentFogotPasswordData={studentFogotPasswordData} onConfirm={handleConfirmGmail} />,
+                children: <GmailAuthencation studentFogotPasswordData={studentFogotPasswordData} onConfirm={handleConfirmGmail} />,
             },
             {
                 key: '2',
@@ -28,12 +28,12 @@ const FogotPassword = ({studentFogotPasswordData}) => {
             {
                 key: '2',
                 label: <p className="title-login title-login--r">(1) NHẬP MÃ XÁC MINH</p>,
-                children: <GmailAuthencation onConfirm={handleConfirmGmail} />,
+                children: <GmailAuthencation studentFogotPasswordData={studentFogotPasswordData} onConfirm={handleConfirmGmail} />,
             },
             {
                 key: '1',
                 label: <p className="title-login title-login--r">(2) MẬT KHẨU MỚI</p>,
-                children: <NewPassword/>,
+                children: <NewPassword />,
             },
         ]
         return (
@@ -50,13 +50,13 @@ const FogotPassword = ({studentFogotPasswordData}) => {
                             ...tab,
                             disabled: tab.key === '2' && activeKey === '2'
                         }))
-                    ) : (null) 
+                    ) : (null)
                 }
                 className="login-body"
                 centered
             />
         );
-    } 
+    }
 
     useEffect(() => {
         handleTransferTab(activeKey);

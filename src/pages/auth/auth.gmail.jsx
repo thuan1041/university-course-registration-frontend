@@ -4,10 +4,13 @@ import axios from "../../utils/axios";
 
 const GmailAuthencation = ({ onConfirm, studentFogotPasswordData }) => {
     const [verificationCode, setVerificationCode] = useState('');
+    const userDataString = localStorage.getItem('dataStudentInfoFogotPassword');
+    const userData = JSON.parse(userDataString);
+    const userInfo = userData;
 
     const handleVerifyOtpResquest = async (verificationCode) => {
         const payload = {
-            "email": "tranminhthuan030302@gmail.com",
+            "email": userData.email,
             "otp": verificationCode
         }
         console.log("payload in otp verity", payload);

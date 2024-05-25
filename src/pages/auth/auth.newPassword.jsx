@@ -19,14 +19,17 @@ const NewPassword = () => {
     const state = useSelector(state => state?.appReducer);
     console.log(state);
 
-    const handleChangePassword = async ()=>{
+    const userDataStringStudentFogotPassword = localStorage.getItem('dataStudentInfoFogotPassword');
+    const userDataStringStudent = JSON.parse(userDataStringStudentFogotPassword);
+    const userInforData = userDataStringStudent
+
+    const handleChangePassword = async (values)=>{
         const payload = {
-            "studentId": 20051041, 
-            "oldPassword": "1111",
-            "newPassword": '1111'
+            "studentId": userInforData.studentId, 
+            "newPassword": values.newPassword,
         }
         try {
-            const response = await axios.put('/student/changePassword', payload);
+            const response = await axios.put('/student/resetPassword', payload);
             
             if (response.errCode === 0) {
                 toast.success("Change password successful!");
@@ -46,6 +49,7 @@ const NewPassword = () => {
             className="login-form"
             initialValues={{ remember: true }}
             size="large"
+            onFinish={handleChangePassword}
         >
 
         <Form.Item
@@ -63,7 +67,7 @@ const NewPassword = () => {
         </Form.Item>
 
         <Form.Item>
-            <Button type="primary" className="login-form-button" block onClick={handleChangePassword}>
+            <Button type="primary" className="login-form-button" block htmlType="submit">
                 <span>Hoàn thành</span>
             </Button>
         </Form.Item>

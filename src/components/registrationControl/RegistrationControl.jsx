@@ -4,7 +4,7 @@ import { Select } from 'antd';
 import { Radio } from 'antd';
 import { UserOutlined, ReloadOutlined, ArrowUpOutlined, DiffOutlined } from '@ant-design/icons';
 
-const RegistrationControl = () => {
+const RegistrationControl = ({setStateCourse}) => {
     const semesters = [
         { id: 1, name: 'HK1 2020-2021' },
         { id: 2, name: 'HK2 2020-2021' },
@@ -23,6 +23,7 @@ const RegistrationControl = () => {
     const onChange = (e) => {
         console.log('Lựa chọn:', e.target.value);
         // Thực hiện các hành động khi người dùng thay đổi lựa chọn
+        setStateCourse(e.target.value);
     };
 
   return (

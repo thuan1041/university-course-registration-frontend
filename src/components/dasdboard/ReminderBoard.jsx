@@ -35,7 +35,7 @@ const ReminderBoard = ({ index }) => {
                         <span>{data[index].text}</span>
                     </div>
                     <div style={{ marginTop: 16 }}>
-                        <a href="#">Xem chi tiết</a>
+                        <a href="/me/time-table">Xem chi tiết</a>
                     </div>
                 </div>
             </Col>
