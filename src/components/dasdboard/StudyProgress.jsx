@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Progress, Row, Col } from 'antd';
+import axios from '../../utils/axios';
 
 const StudyProgress = () => {
     const [hoverText, setHoverText] = useState('');
@@ -18,9 +19,10 @@ const StudyProgress = () => {
             studentId: studenId
         }
         try {
-            const rs = await axios.post(`student/getStudyResult`, payload);
+            const rs = await axios.post(`student/getStudentStatus`, payload);
+            console.log("rs", rs)
             if (rs.errCode === 0) {
-                setResultCourse(rs.data)
+                setResultCourse(rs.data[1])
             }
         } catch (error) {
             console.log("error", error);
@@ -50,14 +52,14 @@ const StudyProgress = () => {
         setShowTotalInfo(true);
     }
 
-    if(getResultCourse.length != 0) {
+    if(getResultCourse.length == 0) {
         return <>
             <div>
                 <p>Loading...</p>
             </div>
         </>
     } else  {
-        let completedCredits = 120;
+        let completedCredits =  getResultCourse?.credits;
         let totalCredits = 156;
         const progressPercentage = ((completedCredits / totalCredits) * 100).toFixed(0);
         const size = 120 * 0.8;
@@ -83,12 +85,12 @@ const StudyProgress = () => {
                             showInfo={showTotalInfo}
                         />
                         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: "#533E29" }}>
-                            {hoverText === '1' && <span>Đã học 130 tín chỉ</span>}
+                            {hoverText === '1' && <span>Đã học {getResultCourse?.credits} tín chỉ</span>}
                             {hoverText === '2' && <span>Tổng 156 tín chỉ</span>}
                         </div>
                     </Col>
                     <div style={{ paddingTop: 20 }}>
-                        <strong style={{ fontWeight: '700', fontSize: 13 }}>126/156</strong>
+                        <strong style={{ fontWeight: '700', fontSize: 13 }}>{getResultCourse?.credits}/156</strong>
                     </div>
                 </Row>
             );

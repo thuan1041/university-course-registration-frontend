@@ -336,6 +336,9 @@ const homeCourseRegistration = () => {
             else if (rs.errCode === 6) {
                 message.error("Sinh viên chưa học môn tiên quyết của môn học này");
             }
+            else if (rs.errCode === 7) {
+                message.error("Lịch học bị trùng với lịch học của sinh viên đã đăng ký");
+            }
             else {
                 message.error("Đăng ký vào danh sách chờ thất bại");
                 return 1

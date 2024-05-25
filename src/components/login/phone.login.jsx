@@ -83,6 +83,19 @@ const LoginPhone = () => {
                     Đăng nhập
                 </Button>
             </Form.Item>
+            {/* thêm login với quyền quản trị */}
+            {/* <Form.Item>
+                 <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="login-form-button"
+                    loading={loading}
+                    block
+                >
+                    Đăng nhập với quyền quản trị
+                </Button> 
+                <a href="" style={{textAlign:"center"}}>Đăng nhập với quyền quản trị</a>
+            </Form.Item> */}
         </Form>
     );
 }
