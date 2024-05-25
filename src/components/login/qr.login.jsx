@@ -18,8 +18,8 @@ const LoginQR = () => {
 
     const handleSendOtp = async () => {
         const payload = {
-            "email": "tranminhthuan030302@gmail.com"
-            // "email": parsedData?.payload?.email,
+            // "email": "tranminhthuan030302@gmail.com"
+            "email": parsedData?.payload?.email,
         }
         try {
             const rs = await axios.post(`/student/sendOTP`, payload)
