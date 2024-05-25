@@ -103,8 +103,8 @@ const ReportTable = ({ data }) => {
         },
         {
             title: 'Số tín chỉ',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'credit',
+            key: 'credit',
         },
         {
             title: 'Điểm',

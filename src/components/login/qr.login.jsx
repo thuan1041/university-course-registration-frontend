@@ -16,6 +16,10 @@ const LoginQR = () => {
     const dispatch = useDispatch();
     const [isConnected, setIsConnected] = useState(false);
 
+    const fetchStudentInfoByStudentId = async (studentId) => {
+        
+    }
+
     const handleSendOtp = async () => {
         const payload = {
             // "email": "tranminhthuan030302@gmail.com"
@@ -49,6 +53,7 @@ const LoginQR = () => {
 
     const onFinish = (values) => {
         console.log('Received values:', values);
+        fetchStudentInfoByStudentId(values.studentId);
         handleSendGmailFogotPassword(values.studentId);
     };
 

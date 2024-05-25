@@ -1020,10 +1020,15 @@ const HomeLayoutAdmin = () => {
     };
 
     const renderContent = () => {
+        const [dataChange, setDataChange] = useState(null);
+        useEffect(() => {
+
+        }, [dataChange]);
+        
         if (isMarkVisible) {
             return <>
                 <Card style={{paddingLeft:10, background:'#fff', margin:'10px', marginTop:10}}>
-                    <Mark record={selectedRecord} onBack={handleBack} />
+                    <Mark record={selectedRecord} onBack={handleBack} setDataChange={setDataChange} />
                 </Card>
             </>
         }

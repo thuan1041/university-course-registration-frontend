@@ -244,7 +244,10 @@ const homeCourseRegistration = () => {
     const [getCourseByMajor, setGetCourseByMajor] = useState();
 
     async function fetchGetCourseByMajor() {
-        const payload = { "major": parsedData?.payload?.major?._id };
+        const payload = {
+            "major": parsedData?.payload?.major?._id
+            , "studentId": parsedData?.payload?.studentId
+        };
         const rs = await axios.post(`/course/getCourceByMajor`, payload);
         if (rs.errCode === 0) {
             setGetCourseByMajor(rs.data);
@@ -317,7 +320,11 @@ const homeCourseRegistration = () => {
             } else if (rs.errCode === 3) {
                 // message.warning("Sinh viên đã có trong danh sách lớp học phần này rồi");
                 return 3
-            } else {
+            }
+            else if (rs.errCode === 6) {
+                message.error("Sinh viên chưa học môn tiên quyết của môn học này");
+            }
+            else {
                 message.error("Đăng ký vào danh sách chờ thất bại");
                 return 1
             }
@@ -328,7 +335,7 @@ const homeCourseRegistration = () => {
 
     const handleVerifyOtp = async () => {
         const payload = {
-            "email": "tranminhthuan030302@gmail.com",
+            "email": parsedData?.payload?.email,
             "otp": otp
         }
         console.log("payload in otp verity", payload);
@@ -339,7 +346,7 @@ const homeCourseRegistration = () => {
                 // setOtp('');
                 // setIsModalVisible(false)
                 return 0
-            } 
+            }
             if (rs.errCode === 1) {
                 // message.error("Xác minh thất bại. Vui lòng kiểm tra lại mã OTP và thử lại");
                 // setOtp('');
@@ -411,11 +418,11 @@ const homeCourseRegistration = () => {
         // message.success("Mã OTP đã được gửi lại");
         // setOtp('')
         let rs = await handleSendOtp()
-        if(rs === 0){
+        if (rs === 0) {
             message.success("Mã OTP đã được gửi lại");
             setOtp('')
         }
-        if(rs === 1){
+        if (rs === 1) {
             message.error("Chưa gởi được mã");
         }
     };
