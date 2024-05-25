@@ -63,16 +63,17 @@ const LoginQR = () => {
         try {
             const rs = await axios.post(`/student/getStudentStatus`, payload)
             if (rs.errCode === 0) {
+                const dataStudentInfoFogotPassword = JSON.stringify(rs?.data[0])
+                localStorage.setItem('dataStudentInfoFogotPassword', dataStudentInfoFogotPassword);
                 console.log("get student info success", rs)
-
                 const payload = {
                     // "email": "tranminhthuan030302@gmail.com"
                     // "email": parsedData?.payload?.email,
                     "email": rs.data[0].email,
                 }
 
-                const dataStudentInfoFogotPassword = JSON.stringify(response.data[0])
-                localStorage.setItem('dataStudentInfoFogotPassword', dataStudentInfoFogotPassword);
+                // const dataStudentInfoFogotPassword = JSON.stringify(response?.data[0])
+                // localStorage.setItem('dataStudentInfoFogotPassword', dataStudentInfoFogotPassword);
                 console.log("payload in send otp", payload);
                 try {
                     const rs = await axios.post(`/student/sendOTP`, payload)
