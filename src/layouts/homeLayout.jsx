@@ -12,6 +12,17 @@ import 'react-toastify/dist/ReactToastify.css';
 const HomeLayout = () => {
   const navigate = useNavigate();
 
+  const userDataString = localStorage.getItem('userData');
+  const userData = JSON.parse(userDataString);
+  const userInfo = userData?.payload;
+
+  console.log("userInfo in homeLayout", userInfo);
+  useEffect(() => {
+    if (userInfo?.studentId == null) {
+      window.location.href = '/login'
+    }
+  }, [])
+
   return (
     <>
       <Layout

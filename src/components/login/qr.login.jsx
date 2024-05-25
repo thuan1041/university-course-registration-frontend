@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Flex, Form, Input, Button} from 'antd';
+import { Flex, Form, Input, Button, message } from 'antd';
 import './qr.login.scss';
 import QRCode from "react-qr-code";
 import { v4 as uuidv4 } from 'uuid';
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ReactLoading from 'react-loading';
 import { LockOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
-
+import axios from "../../utils/axios";
 
 const LoginQR = () => {
     const [value, setValue] = useState('');
@@ -15,63 +15,64 @@ const LoginQR = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isConnected, setIsConnected] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-
-        if (!onlyRender.current && !isConnected) {
-            let token = uuidv4() + JSON.stringify(Date.now())
-            setValue(token);
-            // fetchWaitScanner(token);
+    const handleSendOtp = async () => {
+        const payload = {
+            "email": "tranminhthuan030302@gmail.com"
+            // "email": parsedData?.payload?.email,
         }
-        onlyRender.current = true;
-    });
-    const handleSendGmailFogotPassword = ()=>{
-        navigate('/fogotPassword')
-    }
+        try {
+            const rs = await axios.post(`/student/sendOTP`, payload)
+            if (rs.errCode === 0) {
+                // message.success("Đã gởi mã OTP đến email của sinh viên");
+                return 0
+            } else {
+                // message.error("Chưa gởi được mã");
+                return 1
+            }
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+
+    const handleSendGmailFogotPassword = async (studentId) => {
+        console.log('Student ID:', studentId);
+        let rs = await handleSendOtp()
+        if (rs === 0) {
+            message.success("Đã gởi mã OTP đến email của sinh viên");
+            navigate(`/fogotPassword?studentId=${studentId}`)
+        }
+        if (rs === 1) {
+            message.error("Mã số sinh viên có thể không chính xác hoặc chưa được đăng ký trong hệ thống. Vui lòng kiểm tra lại thông tin và thử lại.");
+        }
+    };
+
+    const onFinish = (values) => {
+        console.log('Received values:', values);
+        handleSendGmailFogotPassword(values.studentId);
+    };
+
     return (
         <Form
             name="normal_login"
             className="login-form"
             initialValues={{ remember: true }}
-            // onFinish={onFinish}
+            onFinish={onFinish} // Đặt sự kiện onFinish vào đây
             size="large"
         >
-        <Form.Item
-            name="studentId"
-            rules={[{ required: true, message: 'Nhập mã sinh viên!' }]}
-        >
-            <Input style={{ gap: '5px' }} prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Student ID" />
-        </Form.Item>
+            <Form.Item
+                name="studentId"
+                rules={[{ required: true, message: 'Nhập mã sinh viên!' }]}
+            >
+                <Input style={{ gap: '5px' }} prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Student ID" />
+            </Form.Item>
 
-        {/* <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Nhập mật khẩu hiện tại!' }]}
-        >
-            <Input style={{ gap: '5px' }} prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Mật khẩu hiện tại" />
-        </Form.Item>
-
-        <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Nhập nhận mật khẩu mới' }]}
-        >
-            <Input style={{ gap: '5px' }} prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Mật khẩu mới" />
-        </Form.Item> */}
-
-        {/* <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Nhập nhận mật khẩu mới' }]}
-        >
-            <Input style={{ gap: '5px' }} prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Xác nhận mật khẩu mới" />
-        </Form.Item> */}
-
-        <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button" block onClick={handleSendGmailFogotPassword}>
+            <Form.Item>
+                <Button type="primary" htmlType="submit" className="login-form-button" block>
                     <span>Gởi yêu cầu</span>
                 </Button>
-
-        </Form.Item>
-    </Form>    
+            </Form.Item>
+        </Form>
     )
 }
 

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import '../auth/auth.loginPage.scss'
-import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { Button, Form, Input, Layout } from 'antd';
 import { STATE } from "../../redux/types/type.app";
 import { useSelector } from "react-redux";
 import FogotPassword from "../../components/login/fogotPassword";
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from "../../utils/axios";
 
 const { Footer } = Layout;
 
@@ -20,6 +21,36 @@ const FogotPage = () => {
     const navigate = useNavigate();
     const state = useSelector(state => state?.appReducer);
     console.log(state);
+
+    const [studentFogotPasswordData, setStudentFogotPasswordData] = useState()
+    // lấy studentId từ url
+    const location = useLocation();
+    const search = location.search;
+    const params = new URLSearchParams(search);
+    const studentId = params.get('studentId');
+    console.log("studentId in url: ", studentId);
+    // 
+    const handleGetStudentInfo = async () => {
+        const payload = {
+            "studentId": studentId
+        }
+        try {
+            let rs = await axios.post(`/student/getStudentStatus`, payload)
+            if (rs.errCode === 0) {
+                console.log("get student info success", rs);
+                // return rs.data
+                setStudentFogotPasswordData(rs.data)
+            }
+        } catch (error) {
+            console.log("error in get student info", error);
+        }
+    }
+    useEffect(() => {
+        if(studentId != null){
+            handleGetStudentInfo()
+        }
+    }, [studentId])
+
     useEffect(() => {
         // if (state?.isLogin === STATE.RESOLVE) {
         //     navigate('/home');
@@ -42,7 +73,9 @@ const FogotPage = () => {
                 </div>
             </div>
             <div className="login-container">
-                <FogotPassword/>
+                {
+                    <FogotPassword studentFogotPasswordData={studentFogotPasswordData} />
+                }
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}

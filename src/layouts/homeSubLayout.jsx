@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Layout, Input, Button, Avatar, Menu, Dropdown, Row, Col, message } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Layout, Input, Button, Avatar, Menu, Dropdown, Row, Col, message, Spin } from 'antd';
 import { HomeOutlined, BellOutlined, UserOutlined, DownOutlined } from '@ant-design/icons';
 import { Content } from "antd/es/layout/layout";
 import StudentDetail from "../components/studentInfo/StuddentDetail";
@@ -23,6 +23,12 @@ const HomeSublayout = () => {
     const userDataString = localStorage.getItem('userData');
     const userData = JSON.parse(userDataString);
     const userInfo = userData?.payload;
+
+    useEffect(() => {
+        if (userInfo?.studentId == null) {
+            window.location.href = '/login'
+        }
+    }, [])
 
     const handleLogout = () => {
         message.success('Đăng xuất thành công.');
@@ -102,6 +108,11 @@ const HomeSublayout = () => {
             }
         }
     }
+    if (userInfo?.studentId == null) {
+        return (
+            <Spin tip="Loading..." style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }} />
+        )
+    }
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Header className="header" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #ccc', padding: '0 200px', borderBlockColor:'#F5F5F5' }}>
@@ -122,7 +133,7 @@ const HomeSublayout = () => {
                             <Button type="text" icon={<BellOutlined />} title="Tin tức"/>
                             <Dropdown overlay={userMenu} trigger={['click']}>
                                 <Button type="text" icon={<Avatar icon={<UserOutlined />} />} style={{ marginLeft: 8 }}>
-                                    {userInfo.name}
+                                    {userInfo?.name}
                                     <DownOutlined/>
                                 </Button>
                             </Dropdown>

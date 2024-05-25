@@ -210,6 +210,7 @@ const homeCourseRegistration = () => {
 
     const savedData = localStorage.getItem('userData');
     const parsedData = JSON.parse(savedData);
+    // console.log("user1223", parsedData?.payload?.studentId);
 
     const fetchGetRegisteredCourseByStudentId = async () => {
         const payload = { "studentId": parsedData?.payload?.studentId };

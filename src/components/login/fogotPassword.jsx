@@ -4,7 +4,7 @@ import { Tabs } from 'antd';
 import GmailAuthencation from "../../pages/auth/auth.gmail";
 import NewPassword from "../../pages/auth/auth.newPassword";
 
-const FogotPassword = () => {
+const FogotPassword = ({studentFogotPasswordData}) => {
     const [activeKey, setActiveKey] = useState('1'); // Trạng thái của tab activ
     
     const handleConfirmGmail = () => {
@@ -16,7 +16,7 @@ const FogotPassword = () => {
             {
                 key: '1',
                 label: <p className="title-login title-login--l">(1) NHẬP MÃ XÁC MINH</p>,
-                children: <GmailAuthencation onConfirm={handleConfirmGmail} />,
+                children: <GmailAuthencation  studentFogotPasswordData={studentFogotPasswordData} onConfirm={handleConfirmGmail} />,
             },
             {
                 key: '2',

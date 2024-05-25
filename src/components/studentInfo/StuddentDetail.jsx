@@ -19,7 +19,7 @@ const StudentDetail = ({userInfo}) => {
 
     return ddmmyy;
   }
-  const dateString = userInfo.dateOfBirth;
+  const dateString = userInfo?.dateOfBirth;
   const formattedDate = formatDateToDDMMYY(dateString);
   return (
     <Card title="Thông tin sinh viên" style={{ padding: 2 }}>
@@ -33,16 +33,16 @@ const StudentDetail = ({userInfo}) => {
           <Meta title="Xem chi tiết" style={{ textAlign: "center" }} />
         </Col>
         <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-          <p>MSSV: <strong>{userInfo.studentId}</strong></p>
-          <p>Họ tên: <strong>{userInfo.name}</strong></p>
+          <p>MSSV: <strong>{userInfo?.studentId}</strong></p>
+          <p>Họ tên: <strong>{userInfo?.name}</strong></p>
           <p>Giới tính: <strong>Nam</strong></p>
           <p>Ngày sinh: <strong>{formattedDate}</strong></p>
-          <p>Nơi sinh: <strong>{userInfo.homeTown}</strong></p>
+          <p>Nơi sinh: <strong>{userInfo?.homeTown}</strong></p>
         </Col>
         <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-          <p>Lớp học: <strong>{userInfo.clazz}</strong></p>
-          <p>Khóa học: <strong>{userInfo.schoolYear}</strong></p>
-          <p>Bậc đào tạo: <strong>{userInfo.educationLevel}</strong></p>
+          <p>Lớp học: <strong>{userInfo?.clazz}</strong></p>
+          <p>Khóa học: <strong>{userInfo?.schoolYear}</strong></p>
+          <p>Bậc đào tạo: <strong>{userInfo?.educationLevel}</strong></p>
           <p>Loại hình đào tạo: <strong>Chính quy</strong></p>
           <p>Ngành: <strong>KTPM</strong></p>
         </Col>
