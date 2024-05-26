@@ -13,6 +13,7 @@ import HomeInstructorLayout from './layouts/homeInstructorLayout';
 import ReportLearingOutcomes from './pages/report/reportLearningOutcomes';
 import { Navigate } from 'react-router-dom';
 import HomeLayoutAdmin from './layouts/homeAdminLayout';
+import LoginAdminPage from './components/login/loginAdminPage';
 
 const routes = [
     {
@@ -29,6 +30,10 @@ const routes = [
     {
         path: '/login',
         element: <LoginPage />,
+    },
+    {
+        path: '/login-admin',
+        element: <LoginAdminPage />,
     },
     {
         path: '/fogotPassword',

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import './phone.login.scss';
+// import './phone.login.scss';
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../utils/axios";
 import { loginSuccess } from "../../redux/actions/app.action";
+import './login.scss';
 
-const LoginPhone = () => {
+const LoginAdmin = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -32,7 +33,7 @@ const LoginPhone = () => {
                     // dispatch(loginSuccess(response.data))
                     const dataToSave = JSON.stringify(dispatch(loginSuccess(response.data)))
                     localStorage.setItem('userData', dataToSave);
-                    navigate(`/home`)
+                    navigate(`/admin/dashboard`)
                 }, [1000])
             } else {
                 setLoading(false);
@@ -59,7 +60,7 @@ const LoginPhone = () => {
             >
                 <Input
                     prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder="Student ID"
+                    placeholder="Admin ID"
                 />
             </Form.Item>
             <Form.Item
@@ -83,11 +84,8 @@ const LoginPhone = () => {
                     Đăng nhập
                 </Button>
             </Form.Item>
-            <div style={{textAlign:'center'}}>
-                <a href="/login-admin" style={{}}>Đăng nhập với quyền quản trị</a>
-            </div>
         </Form>
     );
 }
 
-export default LoginPhone;
+export default LoginAdmin;
