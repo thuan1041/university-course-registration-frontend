@@ -20,6 +20,3 @@
 
   - [7. Student Management Interface for Class](#7-student-management-interface-for-class)
   - ![Picture8](https://github.com/thuan1041/university-course-registration-frontend/assets/125931125/e1cb7e05-2618-4716-9c55-9f7ed25b2e4a)
-
-- [Contributing](#contributing)
-- [License](#license)
